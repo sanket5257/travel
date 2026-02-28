@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
 
@@ -19,11 +20,22 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#hero");
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHome = pathname === "/";
 
-  // Switch to dark mode when scrolled past hero
+  // Switch to dark mode when scrolled past hero, or always dark on non-home pages
   useEffect(() => {
+    if (!isHome) {
+      setScrolled(true);
+      return;
+    }
+
     const hero = document.getElementById("hero");
-    if (!hero) return;
+    if (!hero) {
+      setScrolled(true);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -34,7 +46,7 @@ export default function Navbar() {
 
     observer.observe(hero);
     return () => observer.disconnect();
-  }, []);
+  }, [isHome]);
 
   // Update active link based on scroll position
   useEffect(() => {
@@ -89,6 +101,11 @@ export default function Navbar() {
     setActive(href);
     setOpen(false);
 
+    if (!isHome) {
+      router.push(`/${href}`);
+      return;
+    }
+
     if (href === "#hero") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
@@ -107,7 +124,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between">
         {/* Logo */}
         <a
-          href="#hero"
+          href="/#hero"
           onClick={(e) => handleClick(e, "#hero")}
           className="shrink-0"
         >
