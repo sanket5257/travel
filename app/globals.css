@@ -5,10 +5,11 @@
   --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* scroll-behavior: smooth is handled per-call via JS { behavior: "smooth" }
+   Setting it globally causes fixed-position glitches on mobile when
+   ScrollTrigger auto-refreshes after content height changes. */
 
+html,
 body {
   overflow-x: hidden;
   background: #ffffff;
@@ -41,4 +42,15 @@ section[id] {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+@keyframes nav-enter {
+  from {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

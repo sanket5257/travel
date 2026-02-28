@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useEffect, useState, useLayoutEffect } from "react";
+import { useRef, useEffect, useState, useCallback, useLayoutEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSwipe } from "@/hooks/useSwipe";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -157,6 +158,18 @@ export default function Testimonials() {
     setActive(index);
   };
 
+  const goNext = useCallback(() => {
+    dirRef.current = 1;
+    setActive((prev) => (prev + 1) % testimonials.length);
+  }, []);
+
+  const goPrev = useCallback(() => {
+    dirRef.current = -1;
+    setActive((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  }, []);
+
+  useSwipe(quoteRef, { onSwipeLeft: goNext, onSwipeRight: goPrev });
+
   // Auto-scroll every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -171,7 +184,7 @@ export default function Testimonials() {
     <section
       ref={sectionRef}
       id="testimonials"
-      className="py-16 sm:py-28 xl:py-36 px-5 sm:px-8 lg:px-12 max-w-[1200px] xl:max-w-[1400px] mx-auto text-center"
+      className="py-16 sm:py-28 xl:py-36 px-5 sm:px-8 lg:px-12 max-w-[1200px] xl:max-w-[1400px] mx-auto text-center overflow-hidden"
     >
       <span className="testi-tag inline-block border border-gray-200 rounded-full px-4 py-1.5 text-[12px] text-gray-900 tracking-wide mb-8 sm:mb-14">
         /What Trekkers Say

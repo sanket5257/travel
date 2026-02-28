@@ -5,6 +5,8 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSwipe } from "@/hooks/useSwipe";
+import TrekModal from "./TrekModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -100,6 +102,7 @@ export default function TopTours() {
 
   const [page, setPage] = useState(0);
   const [cols, setCols] = useState<1 | 2 | 3>(3);
+  const [selectedTour, setSelectedTour] = useState<typeof tours[number] | null>(null);
 
   useEffect(() => {
     const check = () => {
@@ -130,6 +133,8 @@ export default function TopTours() {
     dirRef.current = -1;
     setPage((p) => Math.max(p - 1, 0));
   }, []);
+
+  useSwipe(cardsRef, { onSwipeLeft: goNext, onSwipeRight: goPrev });
 
   // Animate progress bar
   useEffect(() => {
@@ -186,11 +191,6 @@ export default function TopTours() {
 
     return () => ctx.revert();
   }, []);
-
-  const scrollToHero = (e: React.MouseEvent) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <section
@@ -262,7 +262,7 @@ export default function TopTours() {
       {/* Tour Cards */}
       <div
         ref={cardsRef}
-        className={`grid gap-5 sm:gap-6 ${
+        className={`grid gap-5 sm:gap-6 overflow-hidden ${
           cols === 1 ? "grid-cols-1" : cols === 2 ? "grid-cols-2" : "grid-cols-3"
         }`}
       >
@@ -299,7 +299,7 @@ export default function TopTours() {
                   </span>
                 </span>
                 <button
-                  onClick={scrollToHero}
+                  onClick={() => setSelectedTour(tour)}
                   className="bg-gray-900 border border-gray-900 text-white text-[12px] font-medium px-5 py-2 rounded-full hover:bg-gray-800 transition-all duration-300"
                 >
                   Book Now
@@ -309,6 +309,13 @@ export default function TopTours() {
           </div>
         ))}
       </div>
+
+      {selectedTour && (
+        <TrekModal
+          tour={selectedTour}
+          onClose={() => setSelectedTour(null)}
+        />
+      )}
     </section>
   );
 }

@@ -5,6 +5,7 @@ import Destinations from "@/components/Destinations";
 import TopTours from "@/components/TopTours";
 import Blog from "@/components/Blog";
 import Testimonials from "@/components/Testimonials";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <TopTours />
       <Blog />
       <Testimonials />
+      <Contact />
       <Footer />
     </main>
   );

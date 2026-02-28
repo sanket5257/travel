@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import gsap from "gsap";
@@ -84,6 +84,34 @@ export default function Blog() {
     if (!scrollRef.current) return;
     scrollRef.current.scrollBy({ left: 360, behavior: "smooth" });
   };
+
+  // Drag-to-scroll for desktop
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
+  const dragScrollLeft = useRef(0);
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+    dragScrollLeft.current = el.scrollLeft;
+    el.setPointerCapture(e.pointerId);
+    el.style.cursor = "grabbing";
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    e.preventDefault();
+    const dx = e.clientX - dragStartX.current;
+    scrollRef.current.scrollLeft = dragScrollLeft.current - dx;
+  }, []);
+
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -170,8 +198,12 @@ export default function Blog() {
           {/* Cards */}
           <div
             ref={scrollRef}
-            className="flex gap-5 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide"
+            className="flex gap-5 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide cursor-grab select-none"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
           >
             {filtered.map((blog, i) => (
               <div

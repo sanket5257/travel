@@ -10,10 +10,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const footerNav = [
   { label: "Home", href: "#hero" },
-  { label: "Treks", href: "#tours" },
-  { label: "Destinations", href: "#destinations" },
   { label: "About Us", href: "#about" },
+  { label: "Destinations", href: "#destinations" },
+  { label: "Treks", href: "#tours" },
+  { label: "Blog", href: "#blog" },
   { label: "Reviews", href: "#testimonials" },
+  { label: "Contact", href: "#contact" },
 ];
 
 const footerLinks = {
@@ -31,9 +33,9 @@ const footerLinks = {
   ],
   Support: [
     { label: "FAQs", href: "#about" },
-    { label: "Contact Us", href: "#about" },
+    { label: "Contact Us", href: "#contact" },
     { label: "Booking Policy", href: "#tours" },
-    { label: "WhatsApp Us", href: "#about" },
+    { label: "WhatsApp Us", href: "#contact" },
   ],
 };
 
@@ -179,8 +181,8 @@ export default function Footer() {
               ENG
             </span>
             <a
-              href="#about"
-              onClick={(e) => handleClick(e, "#about")}
+              href="#contact"
+              onClick={(e) => handleClick(e, "#contact")}
               className="flex items-center gap-1.5 text-white/40 text-[12px] hover:text-white transition"
             >
               <Phone className="w-3.5 h-3.5" />

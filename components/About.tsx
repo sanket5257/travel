@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSwipe } from "@/hooks/useSwipe";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,6 +82,8 @@ export default function About() {
     setPage((p) => Math.max(p - 1, 0));
   }, []);
 
+  useSwipe(cardsRef, { onSwipeLeft: goNext, onSwipeRight: goPrev });
+
   // Animate progress bar on page change
   useEffect(() => {
     if (!progressRef.current) return;
@@ -93,11 +96,21 @@ export default function About() {
   }, [page, totalPages]);
 
   // Slide cards horizontally on page change
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const prevPageRef = useRef(page);
+
   useLayoutEffect(() => {
     if (!cardsRef.current) return;
+    // Only animate when page actually changed (not on isMobile flip)
+    if (prevPageRef.current === page) return;
+    prevPageRef.current = page;
+
+    // Kill any in-flight tween before starting a new one
+    if (tweenRef.current) tweenRef.current.kill();
+
     const dir = dirRef.current;
     const children = cardsRef.current.children;
-    gsap.fromTo(
+    tweenRef.current = gsap.fromTo(
       children,
       { x: dir * 120, opacity: 0 },
       { x: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power3.out" }
@@ -189,7 +202,7 @@ export default function About() {
       {/* Feature Cards */}
       <div
         ref={cardsRef}
-        className={`grid gap-8 sm:gap-10 mb-12 ${
+        className={`grid gap-8 sm:gap-10 mb-12 overflow-hidden ${
           perPage === 2 ? "grid-cols-2" : "grid-cols-1"
         }`}
       >

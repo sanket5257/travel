@@ -3,14 +3,15 @@
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
-import gsap from "gsap";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
-  { label: "Treks", href: "#tours" },
-  { label: "Destinations", href: "#destinations" },
   { label: "About Us", href: "#about" },
+  { label: "Destinations", href: "#destinations" },
+  { label: "Treks", href: "#tours" },
+  { label: "Blog", href: "#blog" },
   { label: "Reviews", href: "#testimonials" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -19,24 +20,45 @@ export default function Navbar() {
   const [active, setActive] = useState("#hero");
   const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    if (!navRef.current) return;
-    gsap.from(navRef.current, {
-      y: -80,
-      opacity: 0,
-      duration: 1.2,
-      ease: "power3.out",
-      delay: 0.3,
-    });
-  }, []);
-
   // Switch to dark mode when scrolled past hero
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.7);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const hero = document.getElementById("hero");
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setScrolled(!entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
+  // Update active link based on scroll position
+  useEffect(() => {
+    const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActive(`#${id}`);
+          }
+        },
+        { rootMargin: "-40% 0px -55% 0px" }
+      );
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   useEffect(() => {
@@ -80,6 +102,7 @@ export default function Navbar() {
     <nav
       ref={navRef}
       className={`fixed top-3 left-3 right-3 md:left-6 md:right-6 xl:left-10 xl:right-10 2xl:left-14 2xl:right-14 z-50 transition-colors duration-300`}
+      style={{ willChange: "transform", backfaceVisibility: "hidden" }}
     >
       <div className="flex items-center justify-between">
         {/* Logo */}
@@ -93,7 +116,7 @@ export default function Navbar() {
             alt="To The Moon Wayfarer"
             width={56}
             height={56}
-            className={`transition-all duration-300 ${scrolled ? "" : "brightness-0 invert"}`}
+            className={`transition-[filter] duration-300 ${scrolled ? "" : "brightness-0 invert"}`}
           />
         </a>
 
@@ -118,8 +141,8 @@ export default function Navbar() {
         {/* Right Side (Desktop) */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="#about"
-            onClick={(e) => handleClick(e, "#about")}
+            href="#contact"
+            onClick={(e) => handleClick(e, "#contact")}
             className={`flex items-center gap-2 backdrop-blur-md text-[13px] font-medium px-5 py-2.5 rounded-full border transition-colors duration-300 ${scrolled ? "bg-gray-900 text-white border-gray-900 hover:bg-gray-800" : "bg-white/10 text-white/90 border-white/10 hover:bg-white/20"}`}
           >
             <Phone className="w-[14px] h-[14px]" />
@@ -130,8 +153,8 @@ export default function Navbar() {
         {/* Mobile Right: Contacts + Hamburger */}
         <div className="flex md:hidden items-center gap-2">
           <a
-            href="#about"
-            onClick={(e) => handleClick(e, "#about")}
+            href="#contact"
+            onClick={(e) => handleClick(e, "#contact")}
             className={`flex items-center gap-1.5 backdrop-blur-md text-[12px] font-medium px-4 py-2.5 rounded-full border transition-colors duration-300 ${scrolled ? "bg-gray-900 text-white border-gray-900" : "bg-white/10 text-white border-white/10"}`}
           >
             <Phone className="w-3.5 h-3.5" />
@@ -148,7 +171,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden mt-3 bg-black/90 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
+        <div className="md:hidden mt-3 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-5 shadow-lg">
           <div className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <a
