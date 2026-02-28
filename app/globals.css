@@ -38,3 +38,7 @@ section[id] {
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
