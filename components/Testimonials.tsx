@@ -184,7 +184,7 @@ export default function Testimonials() {
     <section
       ref={sectionRef}
       id="testimonials"
-      className="py-16 sm:py-28 xl:py-36 px-5 sm:px-8 lg:px-12 max-w-[1200px] xl:max-w-[1400px] mx-auto text-center overflow-hidden"
+      className="px-5 sm:px-8 lg:px-12 max-w-[1200px] xl:max-w-[1400px] mx-auto text-center overflow-hidden h-[620px] sm:h-[700px] lg:h-[750px] xl:h-[800px] flex flex-col items-center justify-start pt-16 sm:pt-28 xl:pt-36"
     >
       <span className="testi-tag inline-block border border-gray-200 rounded-full px-4 py-1.5 text-[12px] text-gray-900 tracking-wide mb-8 sm:mb-14">
         /What Trekkers Say
@@ -192,7 +192,7 @@ export default function Testimonials() {
 
       <div
         ref={quoteRef}
-        className="font-serif text-[1.4rem] sm:text-[1.8rem] lg:text-[2.4rem] xl:text-[2.8rem] leading-[1.3] sm:leading-[1.25] max-w-[900px] xl:max-w-[1050px] mx-auto mb-8 sm:mb-10"
+        className="font-serif text-[1.4rem] sm:text-[1.8rem] lg:text-[2.4rem] xl:text-[2.8rem] leading-[1.3] sm:leading-[1.25] max-w-[900px] xl:max-w-[1050px] mx-auto mb-8 sm:mb-10 h-[200px] sm:h-[170px] lg:h-[200px] xl:h-[220px] overflow-hidden"
       />
 
       {/* Arrows */}
@@ -212,7 +212,7 @@ export default function Testimonials() {
       </div>
 
       {/* Avatars */}
-      <div className="testi-avatars flex items-center justify-center gap-4 sm:gap-6 mb-6">
+      <div className="testi-avatars flex items-center justify-center gap-4 sm:gap-6 mb-6 h-24 sm:h-40 lg:h-44">
         {orderedAvatars.map((person, i) => {
           const isCenter = i === 1;
           return (
@@ -224,7 +224,7 @@ export default function Testimonials() {
               }}
               className={`relative overflow-hidden rounded-2xl shadow-md transition-all duration-500 ${
                 isCenter
-                  ? "w-32 h-32 sm:w-40 sm:h-40 lg:w-44 lg:h-44 shadow-xl"
+                  ? "w-24 h-24 sm:w-40 sm:h-40 lg:w-44 lg:h-44 shadow-xl"
                   : "w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 opacity-80 hover:opacity-100"
               }`}
             >

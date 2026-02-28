@@ -192,7 +192,7 @@ export default function Footer() {
 
           {/* Mobile copyright */}
           <span className="sm:hidden text-[11px] text-white/30">
-            &copy; 2025 To The Moon Wayfarer. All rights reserved.
+            &copy; 2026 To The Moon Wayfarer. All rights reserved.
           </span>
         </div>
       </div>
