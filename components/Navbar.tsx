@@ -111,7 +111,8 @@ export default function Navbar() {
       return;
     }
 
-    const el = document.querySelector(href);
+    const selector = href.startsWith("/") ? href.slice(1) : href;
+    const el = document.querySelector(selector);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 

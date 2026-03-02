@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,62 +10,73 @@ import { Globe, Phone } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 const footerNav = [
-  { label: "Home", href: "#hero" },
-  { label: "About Us", href: "#about" },
-  { label: "Destinations", href: "#destinations" },
-  { label: "Treks", href: "#tours" },
-  { label: "Blog", href: "#blog" },
-  { label: "Reviews", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#hero" },
+  { label: "About Us", href: "/#about" },
+  { label: "Destinations", href: "/#destinations" },
+  { label: "Treks", href: "/#tours" },
+  { label: "Blog", href: "/#blog" },
+  { label: "Reviews", href: "/#testimonials" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const footerLinks = {
   Explore: [
-    { label: "Upcoming Treks", href: "#tours" },
-    { label: "Destinations", href: "#destinations" },
-    { label: "Fort Treks", href: "#tours" },
-    { label: "Himalayan Treks", href: "#tours" },
+    { label: "Upcoming Treks", href: "/#tours" },
+    { label: "Destinations", href: "/#destinations" },
+    { label: "Fort Treks", href: "/#tours" },
+    { label: "Himalayan Treks", href: "/#tours" },
   ],
   "About Us": [
-    { label: "Our Story", href: "#about" },
-    { label: "Testimonials", href: "#testimonials" },
-    { label: "Trek Leaders", href: "#about" },
-    { label: "Safety Policy", href: "#about" },
+    { label: "Our Story", href: "/#about" },
+    { label: "Testimonials", href: "/#testimonials" },
+    { label: "Trek Leaders", href: "/#about" },
+    { label: "Safety Policy", href: "/#about" },
   ],
   Support: [
-    { label: "FAQs", href: "#about" },
-    { label: "Contact Us", href: "#contact" },
-    { label: "Booking Policy", href: "#tours" },
-    { label: "WhatsApp Us", href: "#contact" },
+    { label: "FAQs", href: "/#about" },
+    { label: "Contact Us", href: "/#contact" },
+    { label: "Booking Policy", href: "/#tours" },
+    { label: "WhatsApp Us", href: "/#contact" },
   ],
 };
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     if (!footerRef.current) return;
 
     const ctx = gsap.context(() => {
       if (ctaRef.current) {
-        gsap.from(ctaRef.current, {
-          scrollTrigger: { trigger: ctaRef.current, start: "top 85%" },
-          y: 50,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
-        });
+        gsap.fromTo(
+          ctaRef.current,
+          { y: 50, opacity: 0 },
+          {
+            scrollTrigger: { trigger: ctaRef.current, start: "top 85%" },
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+          }
+        );
       }
 
-      gsap.from(".footer-col", {
-        scrollTrigger: { trigger: footerRef.current, start: "top 90%" },
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-      });
+      gsap.fromTo(
+        ".footer-col",
+        { y: 30, opacity: 0 },
+        {
+          scrollTrigger: { trigger: footerRef.current, start: "top 90%" },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power3.out",
+        }
+      );
     }, footerRef);
 
     return () => ctx.revert();
@@ -75,11 +87,18 @@ export default function Footer() {
     href: string
   ) => {
     e.preventDefault();
-    if (href === "#hero" || href === "#") {
+
+    if (!isHome) {
+      router.push(href);
+      return;
+    }
+
+    if (href === "/#hero" || href === "#hero" || href === "#") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    const el = document.querySelector(href);
+    const selector = href.startsWith("/") ? href.slice(1) : href;
+    const el = document.querySelector(selector);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
