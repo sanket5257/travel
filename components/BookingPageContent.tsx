@@ -174,7 +174,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
         />
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-5">
-          <h1 className="font-serif text-white text-[1.5rem] sm:text-[2rem] lg:text-[2.5rem] text-center leading-tight mb-3">
+          <h1 className="font-serif text-white text-[2rem] sm:text-[2.75rem] xl:text-[3.25rem] text-center leading-[1.12] mb-3">
             {tour.name}
           </h1>
           <nav className="flex items-center gap-2 text-[13px] text-white/70">
@@ -231,7 +231,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
         {/* ── Title + Days + Price Row ── */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
           <div className="flex items-start gap-4">
-            <h2 className="font-serif text-[1.3rem] sm:text-[1.6rem] lg:text-[1.8rem] text-[#232323] leading-tight">
+            <h2 className="font-serif text-[2rem] sm:text-[2.75rem] xl:text-[3.25rem] text-[#232323] leading-[1.12]">
               {tour.name}
             </h2>
             <span
@@ -541,7 +541,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           id="enquiry-form"
           className="tourm-enquiry border border-gray-200 rounded-lg p-6 sm:p-8 mb-14 scroll-mt-24"
         >
-          <h3 className="font-serif text-[1.15rem] sm:text-[1.3rem] text-[#232323] mb-2 text-center">
+          <h3 className="font-serif text-[1.5rem] sm:text-[1.75rem] lg:text-[2rem] text-[#232323] mb-2 text-center">
             Book your spot via the form below.
           </h3>
           <p className="text-[13px] text-gray-400 mb-6 text-center">
@@ -703,7 +703,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
 
         {/* ══════ Related Trips ══════ */}
         <div>
-          <h2 className="font-serif text-[1.3rem] sm:text-[1.6rem] text-[#232323] mb-6">
+          <h2 className="font-serif text-[2rem] sm:text-[2.75rem] xl:text-[3.25rem] text-[#232323] leading-[1.12] mb-6">
             Related trips you might be interested in
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -150,7 +150,7 @@ export default function Blog() {
       <div className="bg-[#e5e5dc] rounded-[20px] sm:rounded-[28px] px-6 sm:px-10 lg:px-14 py-10 sm:py-14 lg:py-16 relative overflow-hidden">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-12 mb-8 sm:mb-10">
-          <h2 className="blog-heading font-serif text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] leading-[1.05] text-[#1a2332]">
+          <h2 className="blog-heading font-serif text-[2rem] sm:text-[2.75rem] xl:text-[3.25rem] leading-[1.12] text-[#1a2332]">
             Trail Stories
           </h2>
           <p className="blog-desc text-[#1a2332] text-[13px] sm:text-[14px] leading-[1.8] lg:max-w-[400px] lg:pt-2">

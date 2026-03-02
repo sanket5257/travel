@@ -164,7 +164,7 @@ export default function Navbar() {
             className={`flex items-center gap-2 backdrop-blur-md text-[13px] font-medium px-5 py-2.5 rounded-full border transition-colors duration-300 ${scrolled ? "bg-gray-900 text-white border-gray-900 hover:bg-gray-800" : "bg-white/10 text-white/90 border-white/10 hover:bg-white/20"}`}
           >
             <Phone className="w-[14px] h-[14px]" />
-            Contact Us
+            Book a trek
           </a>
         </div>
 
