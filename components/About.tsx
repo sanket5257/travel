@@ -170,7 +170,7 @@ export default function About() {
   return (
     <div
       className="bg-no-repeat"
-      style={{ backgroundImage: "url('https://adven-theme.myshopify.com/cdn/shop/files/section-bgimage3.png?v=1620832615')", backgroundPosition: "center bottom -50px" }}
+      style={{ backgroundImage: "url('https://adven-theme.myshopify.com/cdn/shop/files/section-bgimage3.png?v=1620832615')", backgroundPosition: "center bottom -50px", backgroundSize: "100% auto" }}
     >
     <section
       ref={sectionRef}

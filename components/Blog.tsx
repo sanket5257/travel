@@ -144,7 +144,7 @@ export default function Blog() {
   return (
     <div
       className="bg-no-repeat relative"
-      style={{ backgroundImage: "url('https://adven-theme.myshopify.com/cdn/shop/files/section-bgimage4b.png?v=1620978406')", backgroundPosition: "center bottom" }}
+      style={{ backgroundImage: "url('https://adven-theme.myshopify.com/cdn/shop/files/section-bgimage4b.png?v=1620978406')", backgroundPosition: "center bottom", backgroundSize: "100% auto" }}
     >
     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     <section
