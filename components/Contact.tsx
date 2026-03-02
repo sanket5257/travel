@@ -103,7 +103,7 @@ export default function Contact() {
       id="contact"
       className="py-16 sm:py-24 xl:py-32 px-5 sm:px-8 lg:px-12 max-w-[1200px] xl:max-w-[1400px] mx-auto"
     >
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-14">
+      <div className="grid lg:grid-cols-2 items-start gap-10 lg:gap-14">
         {/* Left Column */}
         <div>
           <span className="contact-tag inline-block border border-gray-200 rounded-full px-4 py-1.5 text-[12px] text-gray-900 tracking-wide mb-5 sm:mb-7">
@@ -142,7 +142,7 @@ export default function Contact() {
         </div>
 
         {/* Right Column — Form */}
-        <div className="contact-form-card border border-gray-200 rounded-[20px] p-6 sm:p-8 xl:p-10">
+        <div className="contact-form-card border border-gray-200 rounded-[20px] p-6 sm:p-8 xl:p-10 lg:mt-[160px]">
           {submitted ? (
             <div className="flex flex-col items-center justify-center text-center h-full py-10">
               <CheckCircle className="w-12 h-12 text-teal-500 mb-4" />

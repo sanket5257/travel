@@ -95,17 +95,13 @@ export default function FAQ() {
       id="faq"
       className="py-16 sm:py-24 xl:py-32 px-5 sm:px-8 lg:px-12 max-w-[1200px] xl:max-w-[1400px] mx-auto"
     >
-      {/* Top border + label */}
-      <div className="flex items-center justify-between border-t border-gray-200 pt-6 mb-10 sm:mb-14">
-        <div />
-        <span className="faq-label text-[14px] italic text-gray-900 tracking-wide">
-          FAQs
-        </span>
-      </div>
-
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-14">
         {/* Left Column */}
         <div>
+          <span className="faq-label inline-block border border-gray-200 rounded-full px-4 py-1.5 text-[12px] text-gray-900 tracking-wide mb-5 sm:mb-7">
+            /FAQs
+          </span>
+
           <h2 className="faq-heading font-serif text-[2rem] sm:text-[2.75rem] xl:text-[3.25rem] leading-[1.12] text-gray-900 mb-4">
             Explore our FAQ section for{" "}
             <span className="text-gray-400">answers on trip planning.</span>
