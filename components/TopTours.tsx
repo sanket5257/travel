@@ -7,9 +7,19 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSwipe } from "@/hooks/useSwipe";
-import { tours, toSlug } from "@/lib/tours";
+import { tours as localTours, toSlug } from "@/lib/tours";
+import type { Tour } from "@/lib/tours";
 
 gsap.registerPlugin(ScrollTrigger);
+
+interface DbTour {
+  slug: string;
+  name: string;
+  image: string;
+  duration: string;
+  description: string;
+  price_display: string;
+}
 
 export default function TopTours() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -19,6 +29,29 @@ export default function TopTours() {
 
   const [page, setPage] = useState(0);
   const [cols, setCols] = useState<1 | 2 | 3>(3);
+  const [tours, setTours] = useState<Tour[]>(
+    localTours.map((t) => ({ ...t, slug: toSlug(t.name) }))
+  );
+
+  useEffect(() => {
+    fetch("/api/tours")
+      .then((r) => r.json())
+      .then((data: DbTour[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setTours(
+            data.map((t) => ({
+              name: t.name,
+              slug: t.slug,
+              image: t.image,
+              duration: t.duration,
+              description: t.description,
+              price: t.price_display,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const check = () => {
@@ -183,9 +216,9 @@ export default function TopTours() {
         }`}
       >
         {visible.map((tour, i) => (
-          <div key={tour.name} className="group cursor-pointer">
+          <Link key={tour.name} href={`/book/${tour.slug || toSlug(tour.name)}`} className="group cursor-pointer flex flex-col h-full">
             {/* Image */}
-            <div className={`relative rounded-[14px] overflow-hidden mb-4 h-[260px] sm:h-[300px] lg:h-[340px] xl:h-[380px] ${cols === 3 && i === 1 ? "lg:h-[420px] xl:h-[460px]" : ""}`}>
+            <div className="relative rounded-[14px] overflow-hidden mb-4 h-[260px] sm:h-[300px] lg:h-[340px] xl:h-[380px]">
               <Image
                 src={tour.image}
                 alt={tour.name}
@@ -200,11 +233,11 @@ export default function TopTours() {
               {tour.name}
             </h3>
 
-            <div className="mt-2">
+            <div className="mt-2 flex-1 flex flex-col">
               <span className="text-[13px] text-gray-900">
                 {tour.duration}
               </span>
-              <p className="text-gray-900 text-[13px] mt-2 leading-relaxed">
+              <p className="text-gray-900 text-[13px] mt-2 leading-relaxed flex-1">
                 {tour.description}
               </p>
               <div className="flex items-center justify-between mt-4">
@@ -214,15 +247,14 @@ export default function TopTours() {
                     {tour.price}
                   </span>
                 </span>
-                <Link
-                  href={`/book/${toSlug(tour.name)}`}
-                  className="bg-gray-900 border border-gray-900 text-white text-[12px] font-medium px-5 py-2 rounded-full hover:bg-gray-800 transition-all duration-300"
+                <span
+                  className="bg-gray-900 border border-gray-900 text-white text-[12px] font-medium px-5 py-2 rounded-full group-hover:bg-gray-800 transition-all duration-300"
                 >
                   Book Now
-                </Link>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

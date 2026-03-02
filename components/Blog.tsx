@@ -10,10 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const filters = ["All", "Trek Tips", "Destinations", "Travel Stories"];
 
-const blogs = [
+const localBlogs = [
   {
-    image:
-      "https://images.unsplash.com/photo-1643984953314-8ca84ac57a49?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1643984953314-8ca84ac57a49?w=800&q=80",
     tag: "HIMACHAL",
     category: "Destinations",
     date: "JAN 15, 2025",
@@ -21,8 +20,7 @@ const blogs = [
     title: "Into the Clouds: A First-Timer's Guide to Himalayan Treks",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1695210365465-f0c9839c362e?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1695210365465-f0c9839c362e?w=800&q=80",
     tag: "MAHARASHTRA",
     category: "Travel Stories",
     date: "FEB 02, 2025",
@@ -30,8 +28,7 @@ const blogs = [
     title: "Fort Treks of the Sahyadris: History Beneath Your Feet",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1681045905442-3203fb0e6111?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1681045905442-3203fb0e6111?w=800&q=80",
     tag: "UTTARAKHAND",
     category: "Destinations",
     date: "DEC 20, 2024",
@@ -39,8 +36,7 @@ const blogs = [
     title: "Kedarkantha in Winter: Snow, Silence, and Summit Glory",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1601895912784-8774950a9089?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1601895912784-8774950a9089?w=800&q=80",
     tag: "TREK TIPS",
     category: "Trek Tips",
     date: "NOV 10, 2024",
@@ -49,10 +45,40 @@ const blogs = [
   },
 ];
 
+interface BlogItem {
+  image: string;
+  tag: string;
+  category: string;
+  date: string;
+  readTime: string;
+  title: string;
+}
+
 export default function Blog() {
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = useState("All");
+  const [blogs, setBlogs] = useState<BlogItem[]>(localBlogs);
+
+  useEffect(() => {
+    fetch("/api/blogs")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setBlogs(
+            data.map((b: { image: string; tag: string; category: string; date: string; read_time: string; title: string }) => ({
+              image: b.image,
+              tag: b.tag,
+              category: b.category,
+              date: b.date,
+              readTime: b.read_time,
+              title: b.title,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filtered =
     activeFilter === "All"
@@ -215,16 +241,9 @@ export default function Blog() {
                 key={blog.title}
                 className="blog-card flex-shrink-0 w-[280px] sm:w-[320px] lg:w-auto cursor-pointer group"
               >
-                {/* Top line */}
-                <div className="w-full h-[1px] bg-[#1a2332]/20 mb-5" />
-
                 {/* Image */}
                 <div
-                  className={`relative w-full rounded-[12px] overflow-hidden mb-4 ${
-                    i % 2 === 0
-                      ? "h-[280px] sm:h-[320px] lg:h-[360px]"
-                      : "h-[220px] sm:h-[260px] lg:h-[300px]"
-                  }`}
+                  className="relative w-full rounded-[12px] overflow-hidden h-[280px] sm:h-[320px] lg:h-[360px]"
                 >
                   <Image
                     src={blog.image}
@@ -234,21 +253,6 @@ export default function Blog() {
                     sizes="(max-width: 640px) 280px, 340px"
                   />
                 </div>
-
-                {/* Meta */}
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-[11px] tracking-wide text-[#1a2332] border border-[#1a2332]/30 rounded-full px-3 py-1">
-                    {blog.tag}
-                  </span>
-                  <span className="text-[11px] tracking-wide text-[#1a2332]/60">
-                    {blog.date}{"  "}·{"  "}{blog.readTime}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="font-serif text-[17px] sm:text-[19px] leading-[1.3] text-[#1a2332]">
-                  {blog.title}
-                </h3>
               </div>
             ))}
           </div>

@@ -45,7 +45,7 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { tours, toSlug, type Tour } from "@/lib/tours";
+import { toSlug, type Tour } from "@/lib/tours";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,18 +74,108 @@ type Tab = "overview" | "itinerary" | "cost";
 
 export default function BookingPageContent({ tour }: { tour: Tour }) {
   const [paymentFile, setPaymentFile] = useState<string | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [people, setPeople] = useState(1);
   const [openDay, setOpenDay] = useState<number | null>(0);
   const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [relatedTours, setRelatedTours] = useState<Tour[]>([]);
   const pageRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Form fields
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [emergencyContact, setEmergencyContact] = useState("");
+  const [address, setAddress] = useState("");
+  const [transactionId, setTransactionId] = useState("");
 
   const numericPrice = parseInt(tour.price.replace(/[^\d]/g, ""), 10) || 0;
   const totalAmount = numericPrice * people;
   const formatCurrency = (n: number) => n.toLocaleString("en-IN");
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Fetch related tours from API
+  useEffect(() => {
+    fetch("/api/tours")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const related = data
+            .filter((t: { name: string }) => t.name !== tour.name)
+            .slice(0, 3)
+            .map((t: { name: string; slug: string; image: string; duration: string; description: string; price_display: string; date?: string }) => ({
+              name: t.name,
+              slug: t.slug,
+              image: t.image,
+              duration: t.duration,
+              description: t.description,
+              price: t.price_display,
+              date: t.date,
+            }));
+          setRelatedTours(related);
+        }
+      })
+      .catch(() => {});
+  }, [tour.name]);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setPaymentFile(file.name);
+    if (!file) return;
+    setPaymentFile(file.name);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.url) setPaymentUrl(data.url);
+    } catch {
+      console.error("Upload failed");
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!fullName || !email || !phone) return;
+    setSubmitting(true);
+    setSubmitStatus("idle");
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tour_id: tour.id || null,
+          tour_name: tour.name,
+          full_name: fullName,
+          email,
+          phone,
+          emergency_contact: emergencyContact || null,
+          num_travelers: people,
+          address: address || null,
+          total_amount: totalAmount,
+          payment_screenshot_url: paymentUrl,
+          transaction_id: transactionId || null,
+        }),
+      });
+      if (res.ok) {
+        setSubmitStatus("success");
+        setFullName("");
+        setEmail("");
+        setPhone("");
+        setEmergencyContact("");
+        setAddress("");
+        setTransactionId("");
+        setPaymentFile(null);
+        setPaymentUrl(null);
+        setPeople(1);
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch {
+      setSubmitStatus("error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -135,30 +225,35 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
     { key: "cost", label: "Cost" },
   ];
 
+  const ti = tour.tripInfo || {};
   const tripInfo: { icon: LucideIcon; label: string; value: string }[] = [
     { icon: Clock, label: "Duration", value: tour.duration },
-    { icon: MapPin, label: "Departure", value: "Pune" },
-    { icon: MapPin, label: "Arrival", value: "Pune" },
-    { icon: Sun, label: "Best Season", value: "Oct \u2013 Mar" },
-    { icon: Compass, label: "Trek Lead", value: "Expert Guide" },
-    { icon: Globe, label: "Language", value: "Hindi, English" },
-    { icon: Utensils, label: "Meals", value: "Included" },
+    { icon: MapPin, label: "Departure", value: ti.departure || "Pune" },
+    { icon: MapPin, label: "Arrival", value: ti.arrival || "Pune" },
+    { icon: Sun, label: "Best Season", value: ti.best_season || "Oct \u2013 Mar" },
+    { icon: Compass, label: "Trek Lead", value: ti.trek_lead || "Expert Guide" },
+    { icon: Globe, label: "Language", value: ti.language || "Hindi, English" },
+    { icon: Utensils, label: "Meals", value: ti.meals || "Included" },
     ...(tour.date
       ? [{ icon: Calendar, label: "Next Batch", value: tour.date }]
       : []),
-    { icon: Bus, label: "Transport", value: "Included" },
-    { icon: Thermometer, label: "Difficulty", value: "Moderate" },
-    { icon: WalkIcon, label: "Walking", value: "5\u20138 Hours" },
-    { icon: Users, label: "Group Size", value: "Max 25" },
+    { icon: Bus, label: "Transport", value: ti.transport || "Included" },
+    { icon: Thermometer, label: "Difficulty", value: ti.difficulty || "Moderate" },
+    { icon: WalkIcon, label: "Walking", value: ti.walking || "5\u20138 Hours" },
+    { icon: Users, label: "Group Size", value: ti.group_size || "Max 25" },
   ];
 
   const inputClass =
     "w-full border border-gray-200 rounded-md px-4 py-3 text-[14px] text-[#232323] placeholder:text-gray-400 outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-900/10 transition bg-white";
 
-  // Related tours (exclude current)
-  const relatedTours = tours
-    .filter((t) => t.name !== tour.name)
-    .slice(0, 3);
+  // Gallery images for the 3-image grid on detail page
+  // gallery[0] = large left, gallery[1] = top right, gallery[2] = bottom right
+  const g = tour.gallery || [];
+  const galleryImages = [
+    g[0] || tour.image,
+    g[1] || tour.image,
+    g[2] || tour.image,
+  ];
 
   return (
     <div ref={pageRef}>
@@ -198,7 +293,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           {/* Large left image */}
           <div className="relative rounded-lg overflow-hidden shadow-lg">
             <Image
-              src={tour.image}
+              src={galleryImages[0] || tour.image}
               alt={tour.name}
               fill
               className="object-cover"
@@ -209,7 +304,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           <div className="hidden sm:grid grid-rows-2 gap-3">
             <div className="relative rounded-lg overflow-hidden shadow-lg">
               <Image
-                src={tour.image}
+                src={galleryImages[1] || tour.image}
                 alt={`${tour.name} view`}
                 fill
                 className="object-cover object-[center_30%]"
@@ -218,7 +313,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             </div>
             <div className="relative rounded-lg overflow-hidden shadow-lg">
               <Image
-                src={tour.image}
+                src={galleryImages[2] || tour.image}
                 alt={`${tour.name} detail`}
                 fill
                 className="object-cover object-[center_70%]"
@@ -554,6 +649,8 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
               <input
                 type="text"
                 placeholder="Full Name *"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 className={`${inputClass} pl-10`}
               />
             </div>
@@ -562,6 +659,8 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
               <input
                 type="email"
                 placeholder="Email Address *"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className={`${inputClass} pl-10`}
               />
             </div>
@@ -573,6 +672,8 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
               <input
                 type="tel"
                 placeholder="Contact Number *"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 className={`${inputClass} pl-10`}
               />
             </div>
@@ -581,6 +682,8 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
               <input
                 type="tel"
                 placeholder="Emergency Contact"
+                value={emergencyContact}
+                onChange={(e) => setEmergencyContact(e.target.value)}
                 className={`${inputClass} pl-10`}
               />
             </div>
@@ -629,6 +732,8 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                 <textarea
                   placeholder="Your address"
                   rows={1}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                   className={`${inputClass} pl-10 resize-none h-[46px]`}
                 />
               </div>
@@ -679,6 +784,8 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                   <input
                     type="text"
                     placeholder="Transaction ID"
+                    value={transactionId}
+                    onChange={(e) => setTransactionId(e.target.value)}
                     className={`${inputClass} pl-10`}
                   />
                 </div>
@@ -686,8 +793,21 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             </div>
           </div>
 
+          {submitStatus === "success" && (
+            <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
+              Booking submitted successfully! We&apos;ll get back to you soon.
+            </div>
+          )}
+          {submitStatus === "error" && (
+            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm">
+              Something went wrong. Please try again.
+            </div>
+          )}
+
           <button
-            className="flex items-center justify-center gap-2 text-white text-[14px] font-semibold px-8 py-3.5 rounded-full transition-colors"
+            onClick={handleSubmit}
+            disabled={submitting || !fullName || !email || !phone}
+            className="flex items-center justify-center gap-2 text-white text-[14px] font-semibold px-8 py-3.5 rounded-full transition-colors disabled:opacity-50"
             style={{ backgroundColor: PRIMARY }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#1f2937")
@@ -697,7 +817,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             }
           >
             <Send className="w-4 h-4" />
-            Submit Booking
+            {submitting ? "Submitting..." : "Submit Booking"}
           </button>
         </div>
 
@@ -710,7 +830,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             {relatedTours.map((rt) => (
               <Link
                 key={rt.name}
-                href={`/book/${toSlug(rt.name)}`}
+                href={`/book/${rt.slug || toSlug(rt.name)}`}
                 className="group rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
               >
                 <div className="relative h-[200px] overflow-hidden">

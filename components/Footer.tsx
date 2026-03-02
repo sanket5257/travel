@@ -12,7 +12,6 @@ gsap.registerPlugin(ScrollTrigger);
 const footerNav = [
   { label: "Home", href: "/#hero" },
   { label: "About Us", href: "/#about" },
-  { label: "Destinations", href: "/#destinations" },
   { label: "Treks", href: "/#tours" },
   { label: "Blog", href: "/#blog" },
   { label: "Reviews", href: "/#testimonials" },
@@ -22,7 +21,6 @@ const footerNav = [
 const footerLinks = {
   Explore: [
     { label: "Upcoming Treks", href: "/#tours" },
-    { label: "Destinations", href: "/#destinations" },
     { label: "Fort Treks", href: "/#tours" },
     { label: "Himalayan Treks", href: "/#tours" },
   ],

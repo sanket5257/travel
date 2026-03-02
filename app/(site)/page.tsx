@@ -12,9 +12,10 @@ export default function Home() {
     <main>
 
       <Hero />
+       <TopTours />
       <About />
-      <Destinations />
-      <TopTours />
+      {/* <Destinations /> */}
+     
       <Blog />
       <Testimonials />
       <FAQ />

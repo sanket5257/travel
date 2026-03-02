@@ -9,8 +9,11 @@ export interface ItinerarySection {
 }
 
 export interface Tour {
+  id?: string;
   name: string;
+  slug?: string;
   image: string;
+  gallery?: string[];
   duration: string;
   description: string;
   price: string;
@@ -20,6 +23,7 @@ export interface Tour {
   itineraryDays?: ItineraryDay[];
   itinerarySections?: ItinerarySection[];
   qrImage?: string;
+  tripInfo?: Record<string, string>;
 }
 
 export function toSlug(name: string): string {
