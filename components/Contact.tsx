@@ -10,13 +10,18 @@ gsap.registerPlugin(ScrollTrigger);
 const infoCards = [
   {
     icon: Phone,
-    label: "Phone",
-    value: "+91 98765 43210",
+    label: "Mobile",
+    value: "+91 86053 21035",
+  },
+  {
+    icon: Phone,
+    label: "WhatsApp",
+    value: "+91 98600 10521",
   },
   {
     icon: Mail,
     label: "Email",
-    value: "hello@tothemoon.in",
+    value: "tothemoonwayfarer@gmail.com",
   },
   {
     icon: MapPin,
