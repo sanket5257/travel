@@ -143,9 +143,10 @@ export default function Blog() {
 
   return (
     <div
-      className="bg-no-repeat"
+      className="bg-no-repeat relative"
       style={{ backgroundImage: "url('https://adven-theme.myshopify.com/cdn/shop/files/section-bgimage4b.png?v=1620978406')", backgroundPosition: "center bottom" }}
     >
+    <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     <section
       ref={sectionRef}
       id="blog"
@@ -188,13 +189,13 @@ export default function Blog() {
           {/* Scroll Arrows */}
           <button
             onClick={scrollLeft}
-            className="hidden sm:flex absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#2a6b5a] items-center justify-center text-white shadow-lg hover:bg-[#235a4b] transition-colors duration-300"
+            className="hidden sm:flex lg:hidden absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#2a6b5a] items-center justify-center text-white shadow-lg hover:bg-[#235a4b] transition-colors duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <button
             onClick={scrollRight}
-            className="hidden sm:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#2a6b5a] items-center justify-center text-white shadow-lg hover:bg-[#235a4b] transition-colors duration-300"
+            className="hidden sm:flex lg:hidden absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-[#2a6b5a] items-center justify-center text-white shadow-lg hover:bg-[#235a4b] transition-colors duration-300"
           >
             <ArrowRight className="w-5 h-5" />
           </button>
@@ -202,7 +203,7 @@ export default function Blog() {
           {/* Cards */}
           <div
             ref={scrollRef}
-            className="flex gap-5 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide cursor-grab select-none"
+            className="flex gap-5 sm:gap-6 overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-4 pb-4 lg:pb-0 scrollbar-hide cursor-grab lg:cursor-default select-none"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -212,7 +213,7 @@ export default function Blog() {
             {filtered.map((blog, i) => (
               <div
                 key={blog.title}
-                className="blog-card flex-shrink-0 w-[280px] sm:w-[320px] lg:w-[340px] cursor-pointer group"
+                className="blog-card flex-shrink-0 w-[280px] sm:w-[320px] lg:w-auto cursor-pointer group"
               >
                 {/* Top line */}
                 <div className="w-full h-[1px] bg-[#1a2332]/20 mb-5" />
