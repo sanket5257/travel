@@ -20,7 +20,7 @@ const features = [
   {
     num: "02",
     image:
-      "https://images.unsplash.com/photo-1606585890880-a20adcf38a7e?w=800&q=80",
+      "https://i.pinimg.com/736x/90/55/d6/9055d6357c94ce7bf2c1c074ebad1943.jpg",
     alt: "Safe camping setup at Kedarkantha base",
     text: "Safety-first approach with basic first aid kits, proper gear checks, and well-planned routes\u2014so you can trek with complete peace of mind.",
   },
@@ -34,7 +34,7 @@ const features = [
   {
     num: "04",
     image:
-      "https://images.unsplash.com/photo-1625643145838-3281ee9bf6aa?w=800&q=80",
+      "https://i.pinimg.com/736x/cd/4a/52/cd4a5200a2aaa899045c77c2818e20d9.jpg",
     alt: "Community of trekkers at Kalsubai summit",
     text: "Community-driven adventures that build confidence, connection, and lifelong memories. Every trip is a chance to make friends for life.",
   },

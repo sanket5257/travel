@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Plus, X } from "lucide-react";
@@ -155,13 +154,14 @@ export default function FAQ() {
 
         {/* Right Column — Image + CTA Card */}
         <div className="relative hidden lg:block">
-          <div className="faq-image relative w-full h-[520px] xl:h-[600px] rounded-2xl overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1532236204992-f5e85c024202?w=800&q=80"
-              alt="Aerial view of a busy crosswalk in Japan"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 0vw, 50vw"
+          <div className="faq-image relative w-full h-full min-h-[600px] xl:min-h-[700px] rounded-2xl overflow-hidden">
+            <video
+              src="https://v1.pinimg.com/videos/mc/720p/d1/0b/0a/d10b0ac7a340aa90c0bd947a28160879.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
 

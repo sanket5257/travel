@@ -41,7 +41,7 @@ export const tours: Tour[] = [
   {
     name: "Harihar Fort Trek",
     image:
-      "https://images.unsplash.com/photo-1695210365465-f0c9839c362e?w=800&q=80",
+      "https://i.pinimg.com/1200x/b9/1b/c8/b91bc80f3aa632092ac9a03d494dd07c.jpg",
     duration: "1 Day / 2 Nights",
     description:
       "Scale the iconic rock-cut steps of Harihar Fort in Nashik. Includes lunch, dinner, breakfast, trek badge, and expert leadership.",
@@ -102,7 +102,7 @@ export const tours: Tour[] = [
   {
     name: "Katraj to Sinhagad",
     image:
-      "https://images.unsplash.com/photo-1609232531309-25676b9b7080?w=800&q=80",
+      "https://i.pinimg.com/736x/6d/47/bd/6d47bd80a36689037f8e0177a2faea01.jpg",
     duration: "1 Day",
     description:
       "Traverse the legendary night trail from Katraj to Sinhagad Fort\u2014one of Pune\u2019s most popular endurance treks through the Sahyadri hills.",
@@ -141,7 +141,7 @@ export const tours: Tour[] = [
   {
     name: "Trimbakeshwar Visit",
     image:
-      "https://images.unsplash.com/photo-1719465236914-71562b2c59dd?w=800&q=80",
+      "https://i.pinimg.com/736x/74/23/44/742344aaf9cf59cd7d8560a8464d7074.jpg",
     duration: "2 Days / 1 Night",
     description:
       "A spiritual and scenic journey to the sacred Trimbakeshwar Jyotirlinga temple with full meals, hotel stay, and guided sightseeing.",

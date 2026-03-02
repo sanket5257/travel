@@ -6,40 +6,40 @@ import gsap from "gsap";
 
 const slides = [
   {
-    image: "https://images.unsplash.com/photo-1619260584294-8a4e63f5ade5?w=1920&q=80",
+    image: "/img/home1.jpg",
     destination: "Sahyadris",
     subtitle: "Western Ghats",
     title: "Chase Horizons. Conquer Trails.",
     description: "Curated group adventures across India\u2019s most stunning landscapes. Safe, affordable, and unforgettable.",
     rating: "4.9",
-    cardImage: "https://images.unsplash.com/photo-1619260584294-8a4e63f5ade5?w=400&q=80",
+    cardImage: "/img/home1.jpg",
   },
   {
-    image: "https://images.unsplash.com/photo-1643984953314-8ca84ac57a49?w=1920&q=80",
+    image: "/img/home2.jpg",
     destination: "Himalayas",
     subtitle: "High Altitude Treks",
     title: "Where the Mountains Meet the Sky",
     description: "Trek through ancient trails, snow-capped passes, and valleys that take your breath away in every sense.",
     rating: "4.9",
-    cardImage: "https://images.unsplash.com/photo-1643984953314-8ca84ac57a49?w=400&q=80",
+    cardImage: "/img/home2.jpg",
   },
   {
-    image: "https://images.unsplash.com/photo-1695210365465-f0c9839c362e?w=1920&q=80",
+    image: "/img/home3.jpg",
     destination: "Maharashtra",
     subtitle: "Fort Treks",
     title: "Conquer Historic Forts & Ridges",
     description: "Scale legendary Maratha forts with carved steps, rock-cut caves, and panoramic views of the Sahyadri range.",
     rating: "4.8",
-    cardImage: "https://images.unsplash.com/photo-1695210365465-f0c9839c362e?w=400&q=80",
+    cardImage: "/img/home3.jpg",
   },
   {
-    image: "https://images.unsplash.com/photo-1719465236914-71562b2c59dd?w=1920&q=80",
+    image: "/img/home4.jpeg",
     destination: "Nashik",
     subtitle: "Spiritual & Adventure",
     title: "Trails That Tell Ancient Stories",
     description: "From the sacred Trimbakeshwar temple to the rugged Sahyadri peaks\u2014discover where spirituality meets adventure.",
     rating: "4.8",
-    cardImage: "https://images.unsplash.com/photo-1719465236914-71562b2c59dd?w=400&q=80",
+    cardImage: "/img/home4.jpeg",
   },
 ];
 
