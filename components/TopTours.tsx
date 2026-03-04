@@ -19,6 +19,7 @@ interface DbTour {
   duration: string;
   description: string;
   price_display: string;
+  trip_info?: Record<string, string> | null;
 }
 
 export default function TopTours() {
@@ -46,6 +47,7 @@ export default function TopTours() {
               duration: t.duration,
               description: t.description,
               price: t.price_display,
+              tripInfo: t.trip_info || undefined,
             }))
           );
         }
@@ -226,6 +228,9 @@ export default function TopTours() {
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
               />
+              <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-gray-900 text-[11px] font-semibold px-3 py-1 rounded-full">
+                {tour.tripInfo?.difficulty || "Moderate"}
+              </span>
             </div>
 
             {/* Info */}
