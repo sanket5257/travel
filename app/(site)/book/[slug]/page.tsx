@@ -24,7 +24,7 @@ function dbTourToTour(t: DbTour): Tour {
     safetyMeasures: t.safety_measures || undefined,
     cancellationPolicy: t.cancellation_policy || undefined,
     faq: t.faq || undefined,
-    trekkingStories: t.trekking_stories || undefined,
+    trekkingStories: typeof t.trekking_stories === "string" ? t.trekking_stories : undefined,
     heroImage: t.hero_image || undefined,
   };
 }

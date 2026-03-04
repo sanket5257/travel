@@ -78,7 +78,6 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
   const [people, setPeople] = useState(1);
   const [openDay, setOpenDay] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [openStory, setOpenStory] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
@@ -228,7 +227,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
     { key: "safety", label: "Safety" },
     { key: "cancellation", label: "Cancellation" },
     { key: "faq", label: "FAQ" },
-    { key: "stories", label: "Trekking Stories" },
+    { key: "stories", label: "Trail Stories" },
   ];
 
   const ti = tour.tripInfo || {};
@@ -770,59 +769,18 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             </div>
           )}
 
-          {/* Trekking Stories Tab */}
+          {/* Trail Stories Tab */}
           {activeTab === "stories" && (
             <div className="mb-10">
               <h2 className="font-serif text-[1.3rem] sm:text-[1.5rem] text-[#232323] mb-6">
                 Trail Stories
               </h2>
-              {tour.trekkingStories && tour.trekkingStories.length > 0 ? (
-                <div className="space-y-3">
-                  {tour.trekkingStories.map((story, i) => {
-                    const isOpen = openStory === i;
-                    return (
-                      <div
-                        key={i}
-                        className="border border-gray-200 rounded-lg overflow-hidden"
-                      >
-                        <button
-                          onClick={() => setOpenStory(isOpen ? null : i)}
-                          className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition"
-                        >
-                          <span className="flex items-center gap-3">
-                            <span
-                              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0"
-                              style={{ backgroundColor: PRIMARY }}
-                            >
-                              {i + 1}
-                            </span>
-                            <span className="text-[14px] font-semibold text-[#232323] text-left">
-                              {story.title}
-                            </span>
-                          </span>
-                          <ChevronDown
-                            className={`w-5 h-5 text-gray-400 transition-transform duration-300 shrink-0 ${
-                              isOpen ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-                        <div
-                          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                            isOpen ? "max-h-[800px]" : "max-h-0"
-                          }`}
-                        >
-                          <div className="px-5 pb-5 pt-1 ml-[52px] border-t border-gray-100">
-                            <p className="text-[13px] text-gray-600 leading-[1.7] mt-3 whitespace-pre-line">
-                              {story.content}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+              {tour.trekkingStories ? (
+                <p className="text-[15px] text-gray-600 leading-[1.85] whitespace-pre-line">
+                  {tour.trekkingStories}
+                </p>
               ) : (
-                <p className="text-[15px] text-gray-500">No trekking stories available for this tour yet.</p>
+                <p className="text-[15px] text-gray-500">No trail stories available for this tour yet.</p>
               )}
             </div>
           )}

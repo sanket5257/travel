@@ -27,7 +27,7 @@ export interface Tour {
   safetyMeasures?: string[];
   cancellationPolicy?: string[];
   faq?: { question: string; answer: string }[];
-  trekkingStories?: { title: string; content: string }[];
+  trekkingStories?: string;
   heroImage?: string;
 }
 
