@@ -26,7 +26,7 @@ const infoCards = [
   {
     icon: MapPin,
     label: "Location",
-    value: "Mumbai, Maharashtra",
+    value: "Pune, Maharashtra",
   },
 ];
 

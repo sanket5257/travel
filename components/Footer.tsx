@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Facebook, Instagram, Globe, Phone } from "lucide-react";
+import { Facebook, Instagram, Globe, Phone, MessageCircle, Send } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,21 +20,23 @@ const footerNav = [
 
 const footerLinks = {
   Explore: [
-    { label: "Upcoming Treks", href: "/#tours" },
-    { label: "Fort Treks", href: "/#tours" },
-    { label: "Himalayan Treks", href: "/#tours" },
+    { label: "Top Treks", href: "/#tours" },
+    { label: "About Us", href: "/#about" },
+    { label: "Blog", href: "/#blog" },
+    { label: "FAQs", href: "/#faq" },
   ],
-  "About Us": [
-    { label: "Our Story", href: "/#about" },
-    { label: "Testimonials", href: "/#testimonials" },
-    { label: "Trek Leaders", href: "/#about" },
-    { label: "Safety Policy", href: "/#about" },
-  ],
-  Support: [
-    { label: "FAQs", href: "/#about" },
+  "Get In Touch": [
     { label: "Contact Us", href: "/#contact" },
-    { label: "Booking Policy", href: "/#tours" },
-    { label: "WhatsApp Us", href: "/#contact" },
+    { label: "WhatsApp Us", href: "https://wa.me/919860010521" },
+    { label: "Call Us", href: "tel:8605321035" },
+    { label: "Email Us", href: "mailto:tothemoonwayfarer@gmail.com" },
+  ],
+  Policies: [
+    { label: "Safety Guidelines", href: "/#about" },
+    { label: "Refund Policy", href: "/#about" },
+    { label: "Terms & Conditions", href: "/#about" },
+    { label: "Privacy Policy", href: "/#about" },
+    { label: "Emergency Contact", href: "tel:8605321035" },
   ],
 };
 
@@ -164,18 +166,40 @@ export default function Footer() {
               </p>
               <div className="flex items-center gap-3">
                 <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
+                  href="https://wa.me/919860010521"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition"
+                  aria-label="WhatsApp"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.instagram.com/tothemoonwayfarer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-3.5 h-3.5" />
+                </a>
+                <a
+                  href="https://www.facebook.com/tothemoonwayfarer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition"
+                  aria-label="Facebook"
                 >
                   <Facebook className="w-3.5 h-3.5" />
                 </a>
                 <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
+                  href="https://t.me/tothemoonwayfarer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition"
+                  aria-label="Telegram"
                 >
-                  <Instagram className="w-3.5 h-3.5" />
+                  <Send className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
@@ -223,10 +247,6 @@ export default function Footer() {
 
             {/* Right side */}
             <div className="hidden sm:flex items-center gap-3">
-              <span className="flex items-center gap-1.5 text-white/40 text-[12px]">
-                <Globe className="w-3.5 h-3.5" />
-                ENG
-              </span>
               <a
                 href="#contact"
                 onClick={(e) => handleClick(e, "#contact")}
