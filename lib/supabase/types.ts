@@ -17,6 +17,8 @@ export interface DbTour {
   trip_info: Record<string, string> | null;
   safety_measures: string[] | null;
   cancellation_policy: string[] | null;
+  faq: { question: string; answer: string }[] | null;
+  hero_image: string | null;
   is_active: boolean;
   sort_order: number;
   created_at: string;

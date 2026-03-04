@@ -32,10 +32,10 @@ const footerLinks = {
     { label: "Email Us", href: "mailto:tothemoonwayfarer@gmail.com" },
   ],
   Policies: [
-    { label: "Safety Guidelines", href: "/#about" },
-    { label: "Refund Policy", href: "/#about" },
-    { label: "Terms & Conditions", href: "/#about" },
-    { label: "Privacy Policy", href: "/#about" },
+    { label: "Safety Guidelines", href: "/policies" },
+    { label: "Refund Policy", href: "/policies" },
+    { label: "Terms & Conditions", href: "/policies" },
+    { label: "Legal Liability", href: "/policies" },
     { label: "Emergency Contact", href: "tel:8605321035" },
   ],
 };
@@ -86,7 +86,17 @@ export default function Footer() {
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
+    // Let the browser handle tel:, mailto:, and external links normally
+    if (href.startsWith("tel:") || href.startsWith("mailto:") || href.startsWith("http")) return;
+
     e.preventDefault();
+
+    // Links to a different page (e.g. /policies) — navigate to top
+    if (href.startsWith("/") && !href.startsWith("/#")) {
+      router.push(href);
+      window.scrollTo({ top: 0 });
+      return;
+    }
 
     if (!isHome) {
       router.push(href);
@@ -97,7 +107,7 @@ export default function Footer() {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    const selector = href.startsWith("/") ? href.slice(1) : href;
+    const selector = href.startsWith("/#") ? href.slice(1) : href;
     const el = document.querySelector(selector);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };

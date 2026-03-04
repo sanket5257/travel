@@ -70,14 +70,15 @@ function getInclusionIcon(item: string): LucideIcon {
   return ShieldCheck;
 }
 
-type Tab = "overview" | "itinerary" | "cost" | "safety" | "cancellation";
+type Tab = "overview" | "itinerary" | "cost" | "safety" | "cancellation" | "faq";
 
 export default function BookingPageContent({ tour }: { tour: Tour }) {
   const [paymentFile, setPaymentFile] = useState<string | null>(null);
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [people, setPeople] = useState(1);
   const [openDay, setOpenDay] = useState<number | null>(0);
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<Tab | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [relatedTours, setRelatedTours] = useState<Tour[]>([]);
@@ -225,6 +226,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
     { key: "cost", label: "Cost" },
     { key: "safety", label: "Safety" },
     { key: "cancellation", label: "Cancellation" },
+    { key: "faq", label: "FAQ" },
   ];
 
   const ti = tour.tripInfo || {};
@@ -395,12 +397,12 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
 
         {/* ── Tabs ── */}
         <div className="tourm-tabs-section">
-          <div className="flex border-b border-gray-200 mb-8">
+          <div className="flex overflow-x-auto border-b border-gray-200 mb-8 scrollbar-hide">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`px-5 sm:px-7 py-3.5 text-[14px] sm:text-[15px] font-semibold transition-colors relative ${
+                onClick={() => setActiveTab(activeTab === tab.key ? null : tab.key)}
+                className={`px-4 sm:px-7 py-3.5 text-[13px] sm:text-[15px] font-semibold transition-colors relative whitespace-nowrap shrink-0 ${
                   activeTab === tab.key
                     ? "text-gray-900"
                     : "text-gray-500 hover:text-gray-900"
@@ -707,6 +709,62 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                   </li>
                 ))}
               </ul>
+            </div>
+          )}
+          {/* FAQ Tab */}
+          {activeTab === "faq" && (
+            <div className="mb-10">
+              <h2 className="font-serif text-[1.3rem] sm:text-[1.5rem] text-[#232323] mb-6">
+                Frequently Asked Questions
+              </h2>
+              {tour.faq && tour.faq.length > 0 ? (
+                <div className="space-y-3">
+                  {tour.faq.map((item, i) => {
+                    const isOpen = openFaq === i;
+                    return (
+                      <div
+                        key={i}
+                        className="border border-gray-200 rounded-lg overflow-hidden"
+                      >
+                        <button
+                          onClick={() => setOpenFaq(isOpen ? null : i)}
+                          className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition"
+                        >
+                          <span className="flex items-center gap-3">
+                            <span
+                              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0"
+                              style={{ backgroundColor: PRIMARY }}
+                            >
+                              {i + 1}
+                            </span>
+                            <span className="text-[14px] font-semibold text-[#232323] text-left">
+                              {item.question}
+                            </span>
+                          </span>
+                          <ChevronDown
+                            className={`w-5 h-5 text-gray-400 transition-transform duration-300 shrink-0 ${
+                              isOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                        <div
+                          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                            isOpen ? "max-h-[600px]" : "max-h-0"
+                          }`}
+                        >
+                          <div className="px-5 pb-5 pt-1 ml-[52px] border-t border-gray-100">
+                            <p className="text-[13px] text-gray-600 leading-[1.7] mt-3">
+                              {item.answer}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-[15px] text-gray-500">No FAQs available for this tour yet.</p>
+              )}
             </div>
           )}
         </div>

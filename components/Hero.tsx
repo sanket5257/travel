@@ -4,14 +4,22 @@ import { useRef, useEffect, useState, useCallback, useLayoutEffect } from "react
 import Image from "next/image";
 import gsap from "gsap";
 
-const slides = [
+interface Slide {
+  image: string;
+  destination: string;
+  subtitle: string;
+  title: string;
+  description: string;
+  cardImage: string;
+}
+
+const defaultSlides: Slide[] = [
   {
     image: "/img/home1.jpg",
     destination: "Sahyadris",
     subtitle: "Western Ghats",
     title: "Chase Horizons. Conquer Trails.",
     description: "Curated group adventures across India\u2019s most stunning landscapes. Safe, affordable, and unforgettable.",
-    rating: "4.9",
     cardImage: "/img/home1.jpg",
   },
   {
@@ -20,7 +28,6 @@ const slides = [
     subtitle: "High Altitude Treks",
     title: "Where the Mountains Meet the Sky",
     description: "Trek through ancient trails, snow-capped passes, and valleys that take your breath away in every sense.",
-    rating: "4.9",
     cardImage: "/img/home2.jpg",
   },
   {
@@ -29,7 +36,6 @@ const slides = [
     subtitle: "Fort Treks",
     title: "Conquer Historic Forts & Ridges",
     description: "Scale legendary Maratha forts with carved steps, rock-cut caves, and panoramic views of the Sahyadri range.",
-    rating: "4.8",
     cardImage: "/img/home3.jpg",
   },
   {
@@ -38,7 +44,6 @@ const slides = [
     subtitle: "Spiritual & Adventure",
     title: "Trails That Tell Ancient Stories",
     description: "From the sacred Trimbakeshwar temple to the rugged Sahyadri peaks\u2014discover where spirituality meets adventure.",
-    rating: "4.8",
     cardImage: "/img/home4.jpeg",
   },
 ];
@@ -67,8 +72,32 @@ export default function Hero() {
   const currentRef = useRef(0);
   const hasEnteredRef = useRef(false);
 
+  const [slides, setSlides] = useState<Slide[]>(defaultSlides);
   const [bgSlide, setBgSlide] = useState(0);
   const [stripPos, setStripPos] = useState(0);
+
+  // Fetch dynamic tour data — replace defaults once loaded
+  useEffect(() => {
+    fetch("/api/tours")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length >= 2) {
+          const mapped: Slide[] = data.slice(0, 8).map((t: Record<string, string>) => ({
+            image: t.hero_image || t.image,
+            destination: t.name,
+            subtitle: t.duration,
+            title: t.name,
+            description: t.description,
+            cardImage: t.image,
+          }));
+          setSlides(mapped);
+          setBgSlide(0);
+          setStripPos(0);
+          currentRef.current = 0;
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Queue: 4 cards (2 full + half peek + 1 offscreen for slide-in)
   const queue = [1, 2, 3, 4].map((offset) => slides[(stripPos + offset) % slides.length]);
@@ -108,7 +137,7 @@ export default function Hero() {
         isAnimating.current = false;
       },
     });
-  }, []);
+  }, [slides.length]);
 
   // Auto-advance every 4s
   useEffect(() => {
@@ -245,7 +274,7 @@ export default function Hero() {
                   </h3>
                   <div className="flex items-center gap-1">
                     <StarIcon />
-                    <span className="text-[10px] text-white/50 font-medium">{s.rating}</span>
+                    <span className="text-[10px] text-white/50 font-medium">4.9</span>
                   </div>
                 </div>
                 <p className="text-[10px] text-white/30">{s.subtitle}</p>

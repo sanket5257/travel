@@ -1,0 +1,1 @@
+ALTER TABLE tours ADD COLUMN IF NOT EXISTS faq jsonb DEFAULT '[]';

@@ -212,11 +212,10 @@ interface ContactFormData {
   message: string;
 }
 
-export function sendContactFormToAdmin(data: ContactFormData): void {
+export async function sendContactFormToAdmin(data: ContactFormData): Promise<void> {
   const adminEmail = process.env.ADMIN_EMAIL;
   if (!adminEmail) {
-    console.error("[Email] ADMIN_EMAIL not set, skipping contact form email");
-    return;
+    throw new Error("ADMIN_EMAIL not set");
   }
 
   const html = wrapHtml(
@@ -252,15 +251,13 @@ export function sendContactFormToAdmin(data: ContactFormData): void {
     `
   );
 
-  getTransporter()
-    .sendMail({
-      from: `"To The Moon Wayfarer" <${process.env.SMTP_USER}>`,
-      to: adminEmail,
-      replyTo: data.email,
-      subject: `Contact Form: ${data.name}${data.trek ? ` — ${data.trek}` : ""}`,
-      html,
-    })
-    .catch((err) => console.error("[Email] Failed to send contact form email to admin:", err));
+  await getTransporter().sendMail({
+    from: `"To The Moon Wayfarer" <${process.env.SMTP_USER}>`,
+    to: adminEmail,
+    replyTo: data.email,
+    subject: `Contact Form: ${data.name}${data.trek ? ` — ${data.trek}` : ""}`,
+    html,
+  });
 }
 
 // ---------------------------------------------------------------------------

@@ -13,12 +13,13 @@ export async function POST(request: Request) {
       );
     }
 
-    sendContactFormToAdmin({ name, email, message, phone, trek });
+    await sendContactFormToAdmin({ name, email, message, phone, trek });
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error("[Contact API]", err);
     return NextResponse.json(
-      { error: "Failed to process contact form" },
+      { error: err instanceof Error ? err.message : "Failed to send email" },
       { status: 500 }
     );
   }

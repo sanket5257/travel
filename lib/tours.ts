@@ -26,6 +26,8 @@ export interface Tour {
   tripInfo?: Record<string, string>;
   safetyMeasures?: string[];
   cancellationPolicy?: string[];
+  faq?: { question: string; answer: string }[];
+  heroImage?: string;
 }
 
 export function toSlug(name: string): string {

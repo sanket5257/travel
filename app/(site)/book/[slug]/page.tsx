@@ -23,6 +23,8 @@ function dbTourToTour(t: DbTour): Tour {
     tripInfo: t.trip_info || undefined,
     safetyMeasures: t.safety_measures || undefined,
     cancellationPolicy: t.cancellation_policy || undefined,
+    faq: t.faq || undefined,
+    heroImage: t.hero_image || undefined,
   };
 }
 

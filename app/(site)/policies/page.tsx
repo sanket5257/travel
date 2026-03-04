@@ -104,6 +104,7 @@ export default function PoliciesPage() {
         scrollTrigger: { trigger: ".pol-fade", start: "top 90%" },
       });
     }, pageRef);
+
     return () => ctx.revert();
   }, []);
 

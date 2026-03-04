@@ -193,13 +193,13 @@ export default function About() {
               connection, and lifelong memories across India.
             </p>
           </div>
-          <button
+          {/* <button
             onClick={scrollToDestinations}
             className="about-btn flex items-center gap-3 bg-gray-900 text-white px-7 py-3.5 rounded-full text-[13px] font-medium hover:bg-gray-800 transition-colors shrink-0 self-start sm:self-auto"
           >
             Learn More
             <span className="text-[10px] tracking-[0.25em]">&gt;&gt;&gt;</span>
-          </button>
+          </button> */}
         </div>
       </div>
 

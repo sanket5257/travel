@@ -15,6 +15,11 @@ interface ItineraryDay {
   items: string[];
 }
 
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 interface TourData {
   name: string;
   slug: string;
@@ -33,6 +38,8 @@ interface TourData {
   trip_info: Record<string, string>;
   safety_measures: string[];
   cancellation_policy: string[];
+  faq: FaqItem[];
+  hero_image: string;
   is_active: boolean;
   sort_order: number;
 }
@@ -75,6 +82,8 @@ const defaultData: TourData = {
   trip_info: {},
   safety_measures: [],
   cancellation_policy: [],
+  faq: [],
+  hero_image: "",
   is_active: true,
   sort_order: 0,
 };
@@ -220,7 +229,7 @@ export default function TourForm({ initialData, onSubmit }: Props) {
       </Section>
 
       {/* Trek Images */}
-      <Section title="Trek Images" description="Upload 4 images: 1 for the homepage card, 3 for the booking detail page (large left + 2×2 grid right).">
+      <Section title="Trek Images" description="Upload images: 1 for homepage card, 3 for booking detail page, and 1 wide hero background.">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <ImageUploader
             value={form.image}
@@ -253,6 +262,11 @@ export default function TourForm({ initialData, onSubmit }: Props) {
               update("gallery", g);
             }}
             label="Detail Page — Bottom Right"
+          />
+          <ImageUploader
+            value={form.hero_image}
+            onChange={(url) => update("hero_image", url)}
+            label="Hero Background (wide horizontal)"
           />
         </div>
       </Section>
@@ -318,6 +332,65 @@ export default function TourForm({ initialData, onSubmit }: Props) {
       {/* Cancellation Policy */}
       <Section title="Cancellation Policy" description="Cancellation and refund terms shown on the booking page Cancellation tab.">
         <InclusionsEditor label="Cancellation Policy" value={form.cancellation_policy} onChange={(items) => update("cancellation_policy", items)} placeholder="e.g. 30+ days before: Full refund minus ₹500 processing fee" />
+      </Section>
+
+      {/* FAQ */}
+      <Section title="FAQ" description="Frequently asked questions shown on the booking page FAQ tab.">
+        <div className="space-y-4">
+          {form.faq.map((item, i) => (
+            <div key={i} className="border border-gray-200 rounded-lg p-4 space-y-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Question</label>
+                    <input
+                      type="text"
+                      value={item.question}
+                      onChange={(e) => {
+                        const updated = [...form.faq];
+                        updated[i] = { ...updated[i], question: e.target.value };
+                        update("faq", updated);
+                      }}
+                      className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-shadow"
+                      placeholder="e.g. What should I carry for the trek?"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Answer</label>
+                    <textarea
+                      value={item.answer}
+                      onChange={(e) => {
+                        const updated = [...form.faq];
+                        updated[i] = { ...updated[i], answer: e.target.value };
+                        update("faq", updated);
+                      }}
+                      rows={2}
+                      className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-shadow resize-none"
+                      placeholder="Answer to the question..."
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = form.faq.filter((_, j) => j !== i);
+                    update("faq", updated);
+                  }}
+                  className="text-red-400 hover:text-red-600 text-xs font-medium mt-5 shrink-0"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => update("faq", [...form.faq, { question: "", answer: "" }])}
+            className="text-sm font-medium text-gray-900 hover:text-gray-700 flex items-center gap-1"
+          >
+            + Add Question
+          </button>
+        </div>
       </Section>
 
       {/* QR Code & Settings */}
