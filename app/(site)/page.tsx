@@ -7,6 +7,7 @@ import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Whyus from "@/components/Whyus";
+import Experts from "@/components/Experts";
 
 export default function Home() {
   return (
@@ -17,9 +18,11 @@ export default function Home() {
       <About />
       
       <Whyus />
+        <Experts />
       {/* <Destinations /> */}
 
       <Blog />
+    
       <Testimonials />
       <FAQ />
       <Contact />

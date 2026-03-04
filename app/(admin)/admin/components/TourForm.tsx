@@ -39,6 +39,7 @@ interface TourData {
   safety_measures: string[];
   cancellation_policy: string[];
   faq: FaqItem[];
+  trekking_stories: { title: string; content: string }[];
   hero_image: string;
   is_active: boolean;
   sort_order: number;
@@ -83,6 +84,7 @@ const defaultData: TourData = {
   safety_measures: [],
   cancellation_policy: [],
   faq: [],
+  trekking_stories: [],
   hero_image: "",
   is_active: true,
   sort_order: 0,
@@ -389,6 +391,65 @@ export default function TourForm({ initialData, onSubmit }: Props) {
             className="text-sm font-medium text-gray-900 hover:text-gray-700 flex items-center gap-1"
           >
             + Add Question
+          </button>
+        </div>
+      </Section>
+
+      {/* Trekking Stories */}
+      <Section title="Trekking Stories" description="Stories and experiences shown on the booking page Trekking Stories tab.">
+        <div className="space-y-4">
+          {form.trekking_stories.map((item, i) => (
+            <div key={i} className="border border-gray-200 rounded-lg p-4 space-y-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={item.title}
+                      onChange={(e) => {
+                        const updated = [...form.trekking_stories];
+                        updated[i] = { ...updated[i], title: e.target.value };
+                        update("trekking_stories", updated);
+                      }}
+                      className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-shadow"
+                      placeholder="e.g. My First Summit Experience"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">Content</label>
+                    <textarea
+                      value={item.content}
+                      onChange={(e) => {
+                        const updated = [...form.trekking_stories];
+                        updated[i] = { ...updated[i], content: e.target.value };
+                        update("trekking_stories", updated);
+                      }}
+                      rows={3}
+                      className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-shadow resize-none"
+                      placeholder="Write the trekking story..."
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const updated = form.trekking_stories.filter((_, j) => j !== i);
+                    update("trekking_stories", updated);
+                  }}
+                  className="text-red-400 hover:text-red-600 text-xs font-medium mt-5 shrink-0"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => update("trekking_stories", [...form.trekking_stories, { title: "", content: "" }])}
+            className="text-sm font-medium text-gray-900 hover:text-gray-700 flex items-center gap-1"
+          >
+            + Add Story
           </button>
         </div>
       </Section>

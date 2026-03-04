@@ -302,7 +302,7 @@ export default function Hero() {
               <span className="text-[11px] tracking-[0.25em] group-hover:tracking-[0.35em] transition-all">&gt;&gt;&gt;</span>
             </button>
             <a
-              href="https://chat.whatsapp.com/xxx"
+              href="https://chat.whatsapp.com/JHknCkpniZsJK4OUGpRWj2?mode=gi_t"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2.5 bg-[#25D366] text-white px-7 sm:px-8 py-3.5 sm:py-4 rounded-full text-[13px] sm:text-[14px] font-semibold hover:bg-[#1fb855] transition-all shrink-0"

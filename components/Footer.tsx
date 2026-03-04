@@ -14,6 +14,7 @@ const footerNav = [
   { label: "About Us", href: "/#about" },
   { label: "Treks", href: "/#tours" },
   { label: "Blog", href: "/#blog" },
+  { label: "Our Experts", href: "/#experts" },
   { label: "Reviews", href: "/#testimonials" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -22,6 +23,7 @@ const footerLinks = {
   Explore: [
     { label: "Top Treks", href: "/#tours" },
     { label: "About Us", href: "/#about" },
+    { label: "Our Experts", href: "/#experts" },
     { label: "Blog", href: "/#blog" },
     { label: "FAQs", href: "/#faq" },
   ],
@@ -185,7 +187,7 @@ export default function Footer() {
                   <MessageCircle className="w-3.5 h-3.5" />
                 </a>
                 <a
-                  href="https://www.instagram.com/tothemoonwayfarer"
+                  href="https://www.instagram.com/to_the_moon_wayfarer?igsh=MXFzaG9wNmxja2Q5OA%3D%3D&utm_source=qr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition"
@@ -194,7 +196,7 @@ export default function Footer() {
                   <Instagram className="w-3.5 h-3.5" />
                 </a>
                 <a
-                  href="https://www.facebook.com/tothemoonwayfarer"
+                  href="https://www.facebook.com/share/1DqVB9U364/?mibextid=wwXIfr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition"
@@ -203,7 +205,7 @@ export default function Footer() {
                   <Facebook className="w-3.5 h-3.5" />
                 </a>
                 <a
-                  href="https://t.me/tothemoonwayfarer"
+                  href="https://t.me/ttmw11"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition"
