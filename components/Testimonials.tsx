@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const testimonials = [
   {
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+      "/images/testimonials/amit.jpg",
     name: "Amit K.",
     site: "Mumbai",
     quote:
@@ -20,7 +20,7 @@ const testimonials = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80",
+      "/images/testimonials/sneha.jpg",
     name: "Sneha P.",
     site: "Bangalore",
     quote:
@@ -28,7 +28,7 @@ const testimonials = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
+      "/images/testimonials/rahul.jpg",
     name: "Rahul M.",
     site: "Delhi",
     quote:

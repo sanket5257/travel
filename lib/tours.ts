@@ -47,7 +47,7 @@ export const tours: Tour[] = [
   {
     name: "Harihar Fort Trek",
     image:
-      "https://i.pinimg.com/1200x/b9/1b/c8/b91bc80f3aa632092ac9a03d494dd07c.jpg",
+      "/images/tours/harihar-fort.jpg",
     duration: "1 Day / 2 Nights",
     description:
       "Scale the iconic rock-cut steps of Harihar Fort in Nashik. Includes lunch, dinner, breakfast, trek badge, and expert leadership.",
@@ -108,7 +108,7 @@ export const tours: Tour[] = [
   {
     name: "Katraj to Sinhagad",
     image:
-      "https://i.pinimg.com/736x/6d/47/bd/6d47bd80a36689037f8e0177a2faea01.jpg",
+      "/images/tours/katraj-sinhagad.jpg",
     duration: "1 Day",
     description:
       "Traverse the legendary night trail from Katraj to Sinhagad Fort\u2014one of Pune\u2019s most popular endurance treks through the Sahyadri hills.",
@@ -147,7 +147,7 @@ export const tours: Tour[] = [
   {
     name: "Trimbakeshwar Visit",
     image:
-      "https://i.pinimg.com/736x/74/23/44/742344aaf9cf59cd7d8560a8464d7074.jpg",
+      "/images/tours/trimbakeshwar.jpg",
     duration: "2 Days / 1 Night",
     description:
       "A spiritual and scenic journey to the sacred Trimbakeshwar Jyotirlinga temple with full meals, hotel stay, and guided sightseeing.",
@@ -191,7 +191,7 @@ export const tours: Tour[] = [
   {
     name: "Rajmachi Fort Trek",
     image:
-      "https://images.unsplash.com/photo-1702799464926-b5fb08efe25d?w=800&q=80",
+      "/images/tours/rajmachi-fort.jpg",
     duration: "1 Day / 1 Night",
     description:
       "Camp under the stars at Rajmachi Fort with panoramic views of the Western Ghats, fireflies in season, and a community bonfire.",
@@ -236,7 +236,7 @@ export const tours: Tour[] = [
   {
     name: "Kalsubai Peak Trek",
     image:
-      "https://images.unsplash.com/photo-1708867817468-9f7a7aaa0d50?w=800&q=80",
+      "/images/tours/kalsubai-peak.jpg",
     duration: "1 Day / 1 Night",
     description:
       "Summit Maharashtra\u2019s highest peak at 1,646m. Iron ladders, rocky patches, and a breathtaking sunrise await at the top.",
@@ -288,7 +288,7 @@ export const tours: Tour[] = [
   {
     name: "Harishchandragad Trek",
     image:
-      "https://images.unsplash.com/photo-1708589413212-cd22902e5caf?w=800&q=80",
+      "/images/tours/harishchandragad.jpg",
     duration: "2 Days / 1 Night",
     description:
       "Explore the ancient Konkan Kada cliff, Kedareshwar cave temple, and lush green valleys on this iconic Sahyadri adventure.",
@@ -336,7 +336,7 @@ export const tours: Tour[] = [
   {
     name: "Kedarkantha Trek",
     image:
-      "https://images.unsplash.com/photo-1681045905442-3203fb0e6111?w=800&q=80",
+      "/images/tours/kedarkantha.jpg",
     duration: "5 Days / 4 Nights",
     description:
       "A perfect winter trek in Uttarakhand through snow-laden trails, pine forests, and a stunning summit at 3,800m.",
@@ -402,7 +402,7 @@ export const tours: Tour[] = [
   {
     name: "Triund Trek",
     image:
-      "https://images.unsplash.com/photo-1601895912784-8774950a9089?w=800&q=80",
+      "/images/tours/triund.jpg",
     duration: "2 Days / 1 Night",
     description:
       "Camp at the foothills of the Dhauladhar range in Himachal with stunning views of the Kangra Valley and Himalayan peaks.",
@@ -447,7 +447,7 @@ export const tours: Tour[] = [
   {
     name: "Valley of Flowers Trek",
     image:
-      "https://images.unsplash.com/photo-1723871493526-79bfa8d9402e?w=800&q=80",
+      "/images/tours/valley-of-flowers.jpg",
     duration: "6 Days / 5 Nights",
     description:
       "Walk through UNESCO-listed alpine meadows bursting with rare Himalayan wildflowers in Uttarakhand\u2019s Chamoli district.",

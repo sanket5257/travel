@@ -19,15 +19,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const heroImages = [
   {
-    src: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=900&q=80",
+    src: "/images/about/hero-1.jpg",
     alt: "Mountain landscape",
   },
   {
-    src: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80",
+    src: "/images/about/hero-2.jpg",
     alt: "Forest trail",
   },
   {
-    src: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80",
+    src: "/images/about/hero-3.jpg",
     alt: "Hiking adventure",
   },
 ];
@@ -43,7 +43,7 @@ const timeline = [
     year: "2018",
     text: "Founded with a dream to make adventure travel accessible to everyone across India.",
     image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&q=80",
+      "/images/about/timeline-2018.jpg",
   },
   {
     year: "2019",
@@ -54,13 +54,13 @@ const timeline = [
     year: "2021",
     text: "Crossed 5,000 happy travelers and launched community-driven group treks.",
     image:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&q=80",
+      "/images/about/timeline-2021.jpg",
   },
   {
     year: "2025",
     text: "Reached 10,000+ travelers with 95+ curated destinations nationwide.",
     image:
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=500&q=80",
+      "/images/about/timeline-2025.jpg",
   },
   {
     year: "2028",

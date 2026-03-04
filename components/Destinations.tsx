@@ -12,24 +12,24 @@ const destinations = [
     country: "Maharashtra",
     count: 12,
     images: [
-      "https://images.unsplash.com/photo-1708867817468-9f7a7aaa0d50?w=600&q=80",
-      "https://images.unsplash.com/photo-1619260584294-8a4e63f5ade5?w=600&q=80",
+      "/images/tours/kalsubai-peak.jpg",
+      "/images/destinations/maharashtra-2.jpg",
     ],
   },
   {
     country: "Himachal",
     count: 8,
     images: [
-      "https://images.unsplash.com/photo-1601895912784-8774950a9089?w=600&q=80",
-      "https://images.unsplash.com/photo-1709907153050-a668b4473c47?w=600&q=80",
+      "/images/tours/triund.jpg",
+      "/images/destinations/himachal-2.jpg",
     ],
   },
   {
     country: "Uttarakhand",
     count: 6,
     images: [
-      "https://images.unsplash.com/photo-1643984953314-8ca84ac57a49?w=600&q=80",
-      "https://images.unsplash.com/photo-1681446009293-21839c6cfe92?w=600&q=80",
+      "/images/destinations/uttarakhand-1.jpg",
+      "/images/destinations/uttarakhand-2.jpg",
     ],
   },
 ];

@@ -12,7 +12,7 @@ const filters = ["All", "Trek Tips", "Destinations", "Travel Stories"];
 
 const localBlogs = [
   {
-    image: "https://images.unsplash.com/photo-1643984953314-8ca84ac57a49?w=800&q=80",
+    image: "/images/destinations/uttarakhand-1.jpg",
     tag: "HIMACHAL",
     category: "Destinations",
     date: "JAN 15, 2025",
@@ -20,7 +20,7 @@ const localBlogs = [
     title: "Into the Clouds: A First-Timer's Guide to Himalayan Treks",
   },
   {
-    image: "https://images.unsplash.com/photo-1695210365465-f0c9839c362e?w=800&q=80",
+    image: "/images/blog/forts.jpg",
     tag: "MAHARASHTRA",
     category: "Travel Stories",
     date: "FEB 02, 2025",
@@ -28,7 +28,7 @@ const localBlogs = [
     title: "Fort Treks of the Sahyadris: History Beneath Your Feet",
   },
   {
-    image: "https://images.unsplash.com/photo-1681045905442-3203fb0e6111?w=800&q=80",
+    image: "/images/tours/kedarkantha.jpg",
     tag: "UTTARAKHAND",
     category: "Destinations",
     date: "DEC 20, 2024",
@@ -36,7 +36,7 @@ const localBlogs = [
     title: "Kedarkantha in Winter: Snow, Silence, and Summit Glory",
   },
   {
-    image: "https://images.unsplash.com/photo-1601895912784-8774950a9089?w=800&q=80",
+    image: "/images/tours/triund.jpg",
     tag: "TREK TIPS",
     category: "Trek Tips",
     date: "NOV 10, 2024",
@@ -170,7 +170,7 @@ export default function Blog() {
   return (
     <div
       className="bg-no-repeat relative"
-      style={{ backgroundImage: "url('https://adven-theme.myshopify.com/cdn/shop/files/section-bgimage4b.png?v=1620978406')", backgroundPosition: "center bottom", backgroundSize: "100% auto" }}
+      style={{ backgroundImage: "url('/images/bg/blog-bg.png')", backgroundPosition: "center bottom", backgroundSize: "100% auto" }}
     >
     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     <section

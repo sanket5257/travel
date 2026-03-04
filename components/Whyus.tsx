@@ -13,28 +13,28 @@ const features = [
   {
     num: "01",
     image:
-      "https://images.unsplash.com/photo-1618805714320-f8825019c1be?w=800&q=80",
+      "/images/whyus/leaders.jpg",
     alt: "Expert trek leader guiding a group through Western Ghats",
     text: "Professionally managed treks led by friendly, experienced leaders who know every trail, every shortcut, and every story along the way.",
   },
   {
     num: "02",
     image:
-      "https://i.pinimg.com/736x/90/55/d6/9055d6357c94ce7bf2c1c074ebad1943.jpg",
+      "/images/whyus/safety.jpg",
     alt: "Safe camping setup at Kedarkantha base",
     text: "Safety-first approach with basic first aid kits, proper gear checks, and well-planned routes\u2014so you can trek with complete peace of mind.",
   },
   {
     num: "03",
     image:
-      "https://images.unsplash.com/photo-1660269040593-63eb316ac8d2?w=800&q=80",
+      "/images/whyus/affordable.jpg",
     alt: "Lush green Western Ghats monsoon trail",
     text: "High-quality adventures at affordable prices\u2014because incredible experiences shouldn\u2019t break the bank. Full meals, stays, and transport included.",
   },
   {
     num: "04",
     image:
-      "https://i.pinimg.com/736x/cd/4a/52/cd4a5200a2aaa899045c77c2818e20d9.jpg",
+      "/images/whyus/community.jpg",
     alt: "Community of trekkers at Kalsubai summit",
     text: "Community-driven adventures that build confidence, connection, and lifelong memories. Every trip is a chance to make friends for life.",
   },
@@ -170,7 +170,7 @@ export default function About() {
   return (
     <div
       className="bg-no-repeat"
-      style={{ backgroundImage: "url('https://adven-theme.myshopify.com/cdn/shop/files/section-bgimage3.png?v=1620832615')", backgroundPosition: "center bottom -50px", backgroundSize: "100% auto" }}
+      style={{ backgroundImage: "url('/images/bg/whyus-bg.png')", backgroundPosition: "center bottom -50px", backgroundSize: "100% auto" }}
     >
     <section
       ref={sectionRef}

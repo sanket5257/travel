@@ -156,7 +156,7 @@ export default function FAQ() {
         <div className="relative hidden lg:block">
           <div className="faq-image relative w-full h-full min-h-[600px] xl:min-h-[700px] rounded-2xl overflow-hidden">
             <video
-              src="https://v1.pinimg.com/videos/mc/720p/d1/0b/0a/d10b0ac7a340aa90c0bd947a28160879.mp4"
+              src="/images/faq/video.mp4"
               autoPlay
               loop
               muted

@@ -11,7 +11,7 @@ function toSlug(name: string): string {
 const toursData = [
   {
     name: "Harihar Fort Trek",
-    image: "https://i.pinimg.com/1200x/b9/1b/c8/b91bc80f3aa632092ac9a03d494dd07c.jpg",
+    image: "/images/tours/harihar-fort.jpg",
     duration: "1 Day / 2 Nights",
     description: "Scale the iconic rock-cut steps of Harihar Fort in Nashik. Includes lunch, dinner, breakfast, trek badge, and expert leadership.",
     price: 1666,
@@ -31,7 +31,7 @@ const toursData = [
   },
   {
     name: "Katraj to Sinhagad",
-    image: "https://i.pinimg.com/736x/6d/47/bd/6d47bd80a36689037f8e0177a2faea01.jpg",
+    image: "/images/tours/katraj-sinhagad.jpg",
     duration: "1 Day",
     description: "Traverse the legendary night trail from Katraj to Sinhagad Fort\u2014one of Pune\u2019s most popular endurance treks through the Sahyadri hills.",
     price: 444,
@@ -46,7 +46,7 @@ const toursData = [
   },
   {
     name: "Trimbakeshwar Visit",
-    image: "https://i.pinimg.com/736x/74/23/44/742344aaf9cf59cd7d8560a8464d7074.jpg",
+    image: "/images/tours/trimbakeshwar.jpg",
     duration: "2 Days / 1 Night",
     description: "A spiritual and scenic journey to the sacred Trimbakeshwar Jyotirlinga temple with full meals, hotel stay, and guided sightseeing.",
     price: 5555,
@@ -61,7 +61,7 @@ const toursData = [
   },
   {
     name: "Rajmachi Fort Trek",
-    image: "https://images.unsplash.com/photo-1702799464926-b5fb08efe25d?w=800&q=80",
+    image: "/images/tours/rajmachi-fort.jpg",
     duration: "1 Day / 1 Night",
     description: "Camp under the stars at Rajmachi Fort with panoramic views of the Western Ghats, fireflies in season, and a community bonfire.",
     price: 1800,
@@ -76,7 +76,7 @@ const toursData = [
   },
   {
     name: "Kalsubai Peak Trek",
-    image: "https://images.unsplash.com/photo-1708867817468-9f7a7aaa0d50?w=800&q=80",
+    image: "/images/tours/kalsubai-peak.jpg",
     duration: "1 Day / 1 Night",
     description: "Summit Maharashtra\u2019s highest peak at 1,646m. Iron ladders, rocky patches, and a breathtaking sunrise await at the top.",
     price: 1200,
@@ -94,7 +94,7 @@ const toursData = [
   },
   {
     name: "Harishchandragad Trek",
-    image: "https://images.unsplash.com/photo-1708589413212-cd22902e5caf?w=800&q=80",
+    image: "/images/tours/harishchandragad.jpg",
     duration: "2 Days / 1 Night",
     description: "Explore the ancient Konkan Kada cliff, Kedareshwar cave temple, and lush green valleys on this iconic Sahyadri adventure.",
     price: 2200,
@@ -109,7 +109,7 @@ const toursData = [
   },
   {
     name: "Kedarkantha Trek",
-    image: "https://images.unsplash.com/photo-1681045905442-3203fb0e6111?w=800&q=80",
+    image: "/images/tours/kedarkantha.jpg",
     duration: "5 Days / 4 Nights",
     description: "A perfect winter trek in Uttarakhand through snow-laden trails, pine forests, and a stunning summit at 3,800m.",
     price: 7500,
@@ -127,7 +127,7 @@ const toursData = [
   },
   {
     name: "Triund Trek",
-    image: "https://images.unsplash.com/photo-1601895912784-8774950a9089?w=800&q=80",
+    image: "/images/tours/triund.jpg",
     duration: "2 Days / 1 Night",
     description: "Camp at the foothills of the Dhauladhar range in Himachal with stunning views of the Kangra Valley and Himalayan peaks.",
     price: 3500,
@@ -142,7 +142,7 @@ const toursData = [
   },
   {
     name: "Valley of Flowers Trek",
-    image: "https://images.unsplash.com/photo-1723871493526-79bfa8d9402e?w=800&q=80",
+    image: "/images/tours/valley-of-flowers.jpg",
     duration: "6 Days / 5 Nights",
     description: "Walk through UNESCO-listed alpine meadows bursting with rare Himalayan wildflowers in Uttarakhand\u2019s Chamoli district.",
     price: 8500,
@@ -164,7 +164,7 @@ const toursData = [
 const blogsData = [
   {
     title: "Into the Clouds: A First-Timer's Guide to Himalayan Treks",
-    image: "https://images.unsplash.com/photo-1643984953314-8ca84ac57a49?w=800&q=80",
+    image: "/images/destinations/uttarakhand-1.jpg",
     tag: "HIMACHAL",
     category: "Destinations",
     date: "JAN 15, 2025",
@@ -172,7 +172,7 @@ const blogsData = [
   },
   {
     title: "Fort Treks of the Sahyadris: History Beneath Your Feet",
-    image: "https://images.unsplash.com/photo-1695210365465-f0c9839c362e?w=800&q=80",
+    image: "/images/blog/forts.jpg",
     tag: "MAHARASHTRA",
     category: "Travel Stories",
     date: "FEB 02, 2025",
@@ -180,7 +180,7 @@ const blogsData = [
   },
   {
     title: "Kedarkantha in Winter: Snow, Silence, and Summit Glory",
-    image: "https://images.unsplash.com/photo-1681045905442-3203fb0e6111?w=800&q=80",
+    image: "/images/tours/kedarkantha.jpg",
     tag: "UTTARAKHAND",
     category: "Destinations",
     date: "DEC 20, 2024",
@@ -188,7 +188,7 @@ const blogsData = [
   },
   {
     title: "Pack Light, Trek Far: The Ultimate Gear Checklist for Beginners",
-    image: "https://images.unsplash.com/photo-1601895912784-8774950a9089?w=800&q=80",
+    image: "/images/tours/triund.jpg",
     tag: "TREK TIPS",
     category: "Trek Tips",
     date: "NOV 10, 2024",
