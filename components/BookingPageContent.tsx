@@ -774,7 +774,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           {activeTab === "stories" && (
             <div className="mb-10">
               <h2 className="font-serif text-[1.3rem] sm:text-[1.5rem] text-[#232323] mb-6">
-                Trekking Stories
+                Trail Stories
               </h2>
               {tour.trekkingStories && tour.trekkingStories.length > 0 ? (
                 <div className="space-y-3">

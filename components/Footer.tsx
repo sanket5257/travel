@@ -14,7 +14,7 @@ const footerNav = [
   { label: "About Us", href: "/#about" },
   { label: "Treks", href: "/#tours" },
   { label: "Blog", href: "/#blog" },
-  { label: "Our Experts", href: "/#experts" },
+  { label: "Trekking Leaders", href: "/leaders" },
   { label: "Reviews", href: "/#testimonials" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -23,7 +23,7 @@ const footerLinks = {
   Explore: [
     { label: "Top Treks", href: "/#tours" },
     { label: "About Us", href: "/#about" },
-    { label: "Our Experts", href: "/#experts" },
+    { label: "Trekking Leaders", href: "/leaders" },
     { label: "Blog", href: "/#blog" },
     { label: "FAQs", href: "/#faq" },
   ],
