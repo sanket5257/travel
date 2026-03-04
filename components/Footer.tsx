@@ -1,13 +1,8 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Facebook, Instagram, Globe, Phone, MessageCircle, Send } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { Facebook, Instagram, Phone, MessageCircle, Send } from "lucide-react";
 
 const footerNav = [
   { label: "Home", href: "/#hero" },
@@ -43,46 +38,9 @@ const footerLinks = {
 };
 
 export default function Footer() {
-  const footerRef = useRef<HTMLElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === "/";
-
-  useEffect(() => {
-    if (!footerRef.current) return;
-
-    const ctx = gsap.context(() => {
-      if (ctaRef.current) {
-        gsap.fromTo(
-          ctaRef.current,
-          { y: 50, opacity: 0 },
-          {
-            scrollTrigger: { trigger: ctaRef.current, start: "top 85%" },
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out",
-          }
-        );
-      }
-
-      gsap.fromTo(
-        ".footer-col",
-        { y: 30, opacity: 0 },
-        {
-          scrollTrigger: { trigger: ".footer-links", start: "top 90%" },
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "power3.out",
-        }
-      );
-    }, footerRef);
-
-    return () => ctx.revert();
-  }, []);
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -115,17 +73,14 @@ export default function Footer() {
   };
 
   return (
-    <footer ref={footerRef} className="relative">
+    <footer className="relative">
       {/* ── CTA + Mountain Image ── */}
       <div
         className="relative bg-bottom bg-cover bg-no-repeat pb-[35%] sm:pb-[30%] lg:pb-[25%]"
         style={{ backgroundImage: "url('/img/footer.png')" }}
       >
         {/* CTA content */}
-        <div
-          ref={ctaRef}
-          className="relative z-10 flex flex-col items-center text-center px-5 sm:px-8 pt-16 sm:pt-24 xl:pt-32 pb-8 sm:pb-12"
-        >
+        <div className="relative z-10 flex flex-col items-center text-center px-5 sm:px-8 pt-16 sm:pt-24 xl:pt-32 pb-8 sm:pb-12">
           <h2 className="font-serif text-[2rem] sm:text-[2.75rem] lg:text-[3.25rem] xl:text-[3.75rem] leading-[1.1] text-gray-900 mb-5 sm:mb-6">
             Lace Up, Your Next
             <br />

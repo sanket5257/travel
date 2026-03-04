@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const filters = ["All", "Trek Tips", "Destinations", "Travel Stories"];
+const defaultFilters = ["Trek Tips", "Destinations", "Travel Stories"];
 
 const localBlogs = [
   {
@@ -59,22 +59,24 @@ export default function Blog() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = useState("All");
   const [blogs, setBlogs] = useState<BlogItem[]>(localBlogs);
+  const [filters, setFilters] = useState<string[]>(["All", ...defaultFilters]);
 
   useEffect(() => {
     fetch("/api/blogs")
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setBlogs(
-            data.map((b: { image: string; tag: string; category: string; date: string; read_time: string; title: string }) => ({
-              image: b.image,
-              tag: b.tag,
-              category: b.category,
-              date: b.date,
-              readTime: b.read_time,
-              title: b.title,
-            }))
-          );
+          const mapped = data.map((b: { image: string; tag: string; category: string; date: string; read_time: string; title: string }) => ({
+            image: b.image,
+            tag: b.tag,
+            category: b.category,
+            date: b.date,
+            readTime: b.read_time,
+            title: b.title,
+          }));
+          setBlogs(mapped);
+          const categories = Array.from(new Set(mapped.map((b: BlogItem) => b.category).filter(Boolean)));
+          setFilters(["All", ...categories]);
         }
       })
       .catch(() => {});

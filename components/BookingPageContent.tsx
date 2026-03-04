@@ -76,7 +76,6 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
   const [paymentFile, setPaymentFile] = useState<string | null>(null);
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [people, setPeople] = useState(1);
-  const [openDay, setOpenDay] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<Tab | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -461,106 +460,75 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           {/* Itinerary Tab */}
           {activeTab === "itinerary" && (
             <div className="mb-10">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-serif text-[1.3rem] sm:text-[1.5rem] text-[#232323]">
-                  Itinerary
-                </h2>
-                <button
-                  onClick={() => setOpenDay(openDay === -1 ? null : -1)}
-                  className="text-[13px] font-medium text-gray-900 hover:underline"
-                >
-                  {openDay === -1 ? "Collapse All" : "Expand All"}
-                </button>
-              </div>
+              <h2 className="font-serif text-[1.3rem] sm:text-[1.5rem] text-[#232323] mb-6">
+                Itinerary
+              </h2>
 
-              <div className="space-y-3">
+              <div className="space-y-6">
                 {tour.itineraryDays?.map((day, i) => {
-                  const isOpen = openDay === i || openDay === -1;
                   const isLast =
                     i === (tour.itineraryDays?.length ?? 1) - 1;
                   const extraSections = isLast
                     ? tour.itinerarySections
                     : undefined;
                   return (
-                    <div
-                      key={day.title}
-                      className="border border-gray-200 rounded-lg overflow-hidden"
-                    >
-                      <button
-                        onClick={() =>
-                          setOpenDay(isOpen && openDay !== -1 ? null : i)
-                        }
-                        className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition"
-                      >
-                        <span className="flex items-center gap-3">
-                          <span
-                            className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0"
-                            style={{ backgroundColor: PRIMARY }}
-                          >
-                            {i + 1}
-                          </span>
-                          <span className="text-[14px] font-semibold text-[#232323] text-left">
-                            {day.title}
-                          </span>
+                    <div key={day.title}>
+                      <div className="flex items-center gap-3 mb-3">
+                        <span
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0"
+                          style={{ backgroundColor: PRIMARY }}
+                        >
+                          {i + 1}
                         </span>
-                        <ChevronDown
-                          className={`w-5 h-5 text-gray-400 transition-transform duration-300 shrink-0 ${
-                            isOpen ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-
-                      <div
-                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                          isOpen ? "max-h-[1200px]" : "max-h-0"
-                        }`}
-                      >
-                        <div className="px-5 pb-5 pt-1 ml-[52px] border-t border-gray-100">
-                          <ul className="space-y-2 mt-3">
-                            {day.items.map((item, j) => (
-                              <li
-                                key={j}
-                                className="flex items-start gap-2.5"
-                              >
-                                <span
-                                  className="w-2 h-2 rounded-full mt-[7px] shrink-0"
-                                  style={{ backgroundColor: PRIMARY }}
-                                />
-                                <span className="text-[13px] text-gray-600 leading-[1.7]">
-                                  {item}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-
-                          {extraSections?.map((section) => (
-                            <div key={section.title} className="mt-5">
-                              <h4 className="text-[13px] font-bold text-[#232323] flex items-center gap-2 mb-2">
-                                <MapPin
-                                  className="w-3.5 h-3.5"
-                                  style={{ color: PRIMARY }}
-                                />
-                                {section.title}
-                              </h4>
-                              <ul className="space-y-2">
-                                {section.items.map((sItem, sj) => (
-                                  <li
-                                    key={sj}
-                                    className="flex items-start gap-2.5"
-                                  >
-                                    <span
-                                      className="w-2 h-2 rounded-full mt-[7px] shrink-0"
-                                      style={{ backgroundColor: PRIMARY }}
-                                    />
-                                    <span className="text-[13px] text-gray-600 leading-[1.7]">
-                                      {sItem}
-                                    </span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                        <h3 className="text-[14px] font-semibold text-[#232323]">
+                          {day.title}
+                        </h3>
+                      </div>
+                      <div className="ml-[44px]">
+                        <ul className="space-y-2">
+                          {day.items.map((item, j) => (
+                            <li
+                              key={j}
+                              className="flex items-start gap-2.5"
+                            >
+                              <span
+                                className="w-2 h-2 rounded-full mt-[7px] shrink-0"
+                                style={{ backgroundColor: PRIMARY }}
+                              />
+                              <span className="text-[13px] text-gray-600 leading-[1.7]">
+                                {item}
+                              </span>
+                            </li>
                           ))}
-                        </div>
+                        </ul>
+
+                        {extraSections?.map((section) => (
+                          <div key={section.title} className="mt-5">
+                            <h4 className="text-[13px] font-bold text-[#232323] flex items-center gap-2 mb-2">
+                              <MapPin
+                                className="w-3.5 h-3.5"
+                                style={{ color: PRIMARY }}
+                              />
+                              {section.title}
+                            </h4>
+                            <ul className="space-y-2">
+                              {section.items.map((sItem, sj) => (
+                                <li
+                                  key={sj}
+                                  className="flex items-start gap-2.5"
+                                >
+                                  <span
+                                    className="w-2 h-2 rounded-full mt-[7px] shrink-0"
+                                    style={{ backgroundColor: PRIMARY }}
+                                  />
+                                  <span className="text-[13px] text-gray-600 leading-[1.7]">
+                                    {sItem}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   );

@@ -20,7 +20,7 @@ interface Props {
   onSubmit: (data: BlogData) => Promise<void>;
 }
 
-const categories = ["Destinations", "Travel Stories", "Trek Tips"];
+const defaultCategories = ["Destinations", "Travel Stories", "Trek Tips"];
 
 const defaultData: BlogData = {
   title: "",
@@ -83,17 +83,19 @@ export default function BlogForm({ initialData, onSubmit }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Category</label>
-              <select
+              <input
+                type="text"
+                list="blog-categories"
                 value={form.category}
                 onChange={(e) => update("category", e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm bg-white focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-shadow"
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
+                className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-shadow"
+                placeholder="Type or select a category"
+              />
+              <datalist id="blog-categories">
+                {defaultCategories.map((cat) => (
+                  <option key={cat} value={cat} />
                 ))}
-              </select>
+              </datalist>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Tag</label>
