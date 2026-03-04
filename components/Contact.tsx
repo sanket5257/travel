@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { tours } from "@/lib/tours";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,19 +31,13 @@ const infoCards = [
   },
 ];
 
-const trekOptions = [
-  "Select a trek",
-  "Kalsubai Summit",
-  "Harishchandragad",
-  "Rajgad Fort",
-  "Kedarkantha",
-  "Hampta Pass",
-  "Other",
-];
+const trekOptions = [...tours.map((t) => t.name), "Other"];
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -97,9 +92,38 @@ export default function Contact() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    const form = e.currentTarget;
+    const data = {
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      phone: (form.elements.namedItem("phone") as HTMLInputElement).value || undefined,
+      trek: (form.elements.namedItem("trek") as HTMLSelectElement).value || undefined,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => null);
+        throw new Error(json?.error || "Something went wrong");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -174,12 +198,14 @@ export default function Contact() {
               <div className="grid sm:grid-cols-2 gap-5">
                 <input
                   type="text"
+                  name="name"
                   placeholder="Your Name"
                   required
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 placeholder:text-gray-400 outline-none focus:border-gray-400 transition"
                 />
                 <input
                   type="email"
+                  name="email"
                   placeholder="Email Address"
                   required
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 placeholder:text-gray-400 outline-none focus:border-gray-400 transition"
@@ -189,17 +215,19 @@ export default function Contact() {
               <div className="grid sm:grid-cols-2 gap-5">
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="Phone Number"
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 placeholder:text-gray-400 outline-none focus:border-gray-400 transition"
                 />
                 <select
+                  name="trek"
                   defaultValue=""
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 outline-none focus:border-gray-400 transition appearance-none bg-white"
                 >
                   <option value="" disabled>
                     Select a trek
                   </option>
-                  {trekOptions.slice(1).map((opt) => (
+                  {trekOptions.map((opt) => (
                     <option key={opt} value={opt}>
                       {opt}
                     </option>
@@ -208,18 +236,24 @@ export default function Contact() {
               </div>
 
               <textarea
+                name="message"
                 placeholder="Your Message"
                 rows={4}
                 required
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 placeholder:text-gray-400 outline-none focus:border-gray-400 transition resize-none"
               />
 
+              {error && (
+                <p className="text-red-600 text-[13px]">{error}</p>
+              )}
+
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 bg-gray-900 text-white px-7 py-3.5 rounded-full text-[13px] font-medium hover:bg-gray-800 transition-colors self-start"
+                disabled={loading}
+                className="flex items-center justify-center gap-2 bg-gray-900 text-white px-7 py-3.5 rounded-full text-[13px] font-medium hover:bg-gray-800 transition-colors self-start disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Send className="w-[14px] h-[14px]" />
-                Send Message
+                {loading ? "Sending..." : "Send Message"}
               </button>
             </form>
           )}

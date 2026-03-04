@@ -21,6 +21,8 @@ function dbTourToTour(t: DbTour): Tour {
     itinerarySections: t.itinerary_sections || undefined,
     qrImage: t.qr_image || undefined,
     tripInfo: t.trip_info || undefined,
+    safetyMeasures: t.safety_measures || undefined,
+    cancellationPolicy: t.cancellation_policy || undefined,
   };
 }
 

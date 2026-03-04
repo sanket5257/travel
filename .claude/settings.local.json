@@ -5,7 +5,17 @@
       "Bash(npx next build)",
       "Bash(npx next dev --port 3000)",
       "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__28bc9c2a._.css\")",
-      "Bash(ls -la /e/travel/*.config.*)"
+      "Bash(ls -la /e/travel/*.config.*)",
+      "Bash(source .env.local)",
+      "Bash(curl -s -X POST \"$NEXT_PUBLIC_SUPABASE_URL/rest/v1/rpc/\" -H \"apikey: $SUPABASE_SERVICE_ROLE_KEY\" -H \"Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" --data-raw '{\"\"query\"\": \"\"SELECT column_name FROM information_schema.columns WHERE table_name = ''''tours''''\"\"}')",
+      "Bash(curl -s \"$NEXT_PUBLIC_SUPABASE_URL/rest/v1/tours?select=id,safety_measures&limit=1\" -H \"apikey: $SUPABASE_SERVICE_ROLE_KEY\" -H \"Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY\")",
+      "Bash(npx supabase --version)",
+      "Bash(npx supabase db execute --project-ref flysnlreqvqpafmefggt \"ALTER TABLE tours ADD COLUMN IF NOT EXISTS safety_measures text[] DEFAULT ''{}''; ALTER TABLE tours ADD COLUMN IF NOT EXISTS cancellation_policy text[] DEFAULT ''{}'';\")",
+      "Bash(curl -s -X POST \"https://flysnlreqvqpafmefggt.supabase.co/rest/v1/rpc/\" -H \"apikey: $SUPABASE_SERVICE_ROLE_KEY\" -H \"Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY\" -H \"Content-Type: application/json\")",
+      "Bash(curl -s -X POST \"https://flysnlreqvqpafmefggt.supabase.co/rest/v1/rpc/exec_sql\" -H \"apikey: $SUPABASE_SERVICE_ROLE_KEY\" -H \"Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY\" -H \"Content-Type: application/json\" -d '{\"\"sql\"\": \"\"SELECT 1\"\"}')",
+      "Bash(curl -s -X POST http://localhost:3000/api/migrate)",
+      "Bash(npx supabase login --token \"$SUPABASE_SERVICE_ROLE_KEY\")",
+      "Bash(SUPABASE_ACCESS_TOKEN=\"$SUPABASE_SERVICE_ROLE_KEY\" npx supabase db execute --project-ref flysnlreqvqpafmefggt \"SELECT 1\")"
     ]
   }
 }

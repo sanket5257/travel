@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { sendBookingConfirmationToCustomer, sendNewBookingToAdmin } from "@/lib/email";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -42,6 +43,11 @@ export async function POST(request: Request) {
       .single();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    // Fire-and-forget email notifications
+    sendBookingConfirmationToCustomer(data);
+    sendNewBookingToAdmin(data);
+
     return NextResponse.json(data, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Failed to create booking" }, { status: 500 });

@@ -6,9 +6,11 @@ import { X, Plus } from "lucide-react";
 interface Props {
   value: string[];
   onChange: (items: string[]) => void;
+  label?: string;
+  placeholder?: string;
 }
 
-export default function InclusionsEditor({ value, onChange }: Props) {
+export default function InclusionsEditor({ value, onChange, label = "Inclusions", placeholder = "Type and press Enter to add" }: Props) {
   const [input, setInput] = useState("");
 
   const addItem = () => {
@@ -25,7 +27,7 @@ export default function InclusionsEditor({ value, onChange }: Props) {
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">Inclusions</label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
       <div className="flex flex-wrap gap-2 mb-3">
         {value.map((item, i) => (
           <span key={i} className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-full">
@@ -42,7 +44,7 @@ export default function InclusionsEditor({ value, onChange }: Props) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addItem(); } }}
-          placeholder="Type and press Enter to add"
+          placeholder={placeholder}
           className="flex-1 border border-gray-200 rounded-md px-3 py-2 text-sm"
         />
         <button type="button" onClick={addItem} className="flex items-center gap-1 px-3 py-2 bg-gray-900 text-white text-sm rounded-md hover:bg-gray-800">

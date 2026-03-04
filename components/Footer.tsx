@@ -32,10 +32,10 @@ const footerLinks = {
     { label: "Email Us", href: "mailto:tothemoonwayfarer@gmail.com" },
   ],
   Policies: [
-    { label: "Safety Guidelines", href: "/policies#safety" },
-    { label: "Refund Policy", href: "/policies#refund" },
-    { label: "Terms & Conditions", href: "/policies#terms" },
-    { label: "Legal & Indemnity", href: "/policies#liability" },
+    { label: "Safety Guidelines", href: "/#about" },
+    { label: "Refund Policy", href: "/#about" },
+    { label: "Terms & Conditions", href: "/#about" },
+    { label: "Privacy Policy", href: "/#about" },
     { label: "Emergency Contact", href: "tel:8605321035" },
   ],
 };

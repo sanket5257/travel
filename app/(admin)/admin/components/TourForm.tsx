@@ -31,6 +31,8 @@ interface TourData {
   itinerary_sections: ItineraryDay[];
   qr_image: string;
   trip_info: Record<string, string>;
+  safety_measures: string[];
+  cancellation_policy: string[];
   is_active: boolean;
   sort_order: number;
 }
@@ -43,12 +45,14 @@ interface Props {
 const tripInfoFields = [
   { key: "departure", label: "Departure", placeholder: "Pune" },
   { key: "arrival", label: "Arrival", placeholder: "Pune" },
+  { key: "altitude", label: "Altitude", placeholder: "e.g. 3,600 ft" },
+  { key: "difficulty", label: "Difficulty Level", placeholder: "Easy / Moderate / Hard" },
+  { key: "fitness", label: "Fitness Requirement", placeholder: "Basic Fitness / Moderate / High" },
   { key: "best_season", label: "Best Season", placeholder: "Oct – Mar" },
   { key: "trek_lead", label: "Trek Lead", placeholder: "Expert Guide" },
   { key: "language", label: "Language", placeholder: "Hindi, English" },
   { key: "meals", label: "Meals", placeholder: "Included" },
   { key: "transport", label: "Transport", placeholder: "Included" },
-  { key: "difficulty", label: "Difficulty", placeholder: "Moderate" },
   { key: "walking", label: "Walking", placeholder: "5–8 Hours" },
   { key: "group_size", label: "Group Size", placeholder: "Max 25" },
 ];
@@ -69,6 +73,8 @@ const defaultData: TourData = {
   itinerary_sections: [],
   qr_image: "",
   trip_info: {},
+  safety_measures: [],
+  cancellation_policy: [],
   is_active: true,
   sort_order: 0,
 };
@@ -214,7 +220,7 @@ export default function TourForm({ initialData, onSubmit }: Props) {
       </Section>
 
       {/* Trek Images */}
-      <Section title="Trek Images" description="Upload 4 images: 1 for the homepage card, 3 for the booking details page gallery.">
+      <Section title="Trek Images" description="Upload 4 images: 1 for the homepage card, 3 for the booking detail page (large left + 2×2 grid right).">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <ImageUploader
             value={form.image}
@@ -252,7 +258,7 @@ export default function TourForm({ initialData, onSubmit }: Props) {
       </Section>
 
       {/* Trip Info */}
-      <Section title="Trip Info" description="These values appear in the Trip Info grid on the booking page. Leave blank to use defaults.">
+      <Section title="Trip Info" description="These values appear on the booking page. Altitude, Difficulty, Fitness & Duration are shown prominently in the info grid.">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {tripInfoFields.map(({ key, label, placeholder }) => (
             <div key={key}>
@@ -302,6 +308,16 @@ export default function TourForm({ initialData, onSubmit }: Props) {
             label="Extra Sections"
           />
         </div>
+      </Section>
+
+      {/* Safety Measures */}
+      <Section title="Safety Measures" description="Safety protocols and guidelines shown on the booking page Safety tab.">
+        <InclusionsEditor label="Safety Measures" value={form.safety_measures} onChange={(items) => update("safety_measures", items)} placeholder="e.g. Certified trek leaders on every trip" />
+      </Section>
+
+      {/* Cancellation Policy */}
+      <Section title="Cancellation Policy" description="Cancellation and refund terms shown on the booking page Cancellation tab.">
+        <InclusionsEditor label="Cancellation Policy" value={form.cancellation_policy} onChange={(items) => update("cancellation_policy", items)} placeholder="e.g. 30+ days before: Full refund minus ₹500 processing fee" />
       </Section>
 
       {/* QR Code & Settings */}

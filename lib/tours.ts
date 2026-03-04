@@ -24,6 +24,8 @@ export interface Tour {
   itinerarySections?: ItinerarySection[];
   qrImage?: string;
   tripInfo?: Record<string, string>;
+  safetyMeasures?: string[];
+  cancellationPolicy?: string[];
 }
 
 export function toSlug(name: string): string {

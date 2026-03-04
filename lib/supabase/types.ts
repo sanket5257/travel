@@ -15,6 +15,8 @@ export interface DbTour {
   itinerary_sections: { title: string; items: string[] }[] | null;
   qr_image: string | null;
   trip_info: Record<string, string> | null;
+  safety_measures: string[] | null;
+  cancellation_policy: string[] | null;
   is_active: boolean;
   sort_order: number;
   created_at: string;
