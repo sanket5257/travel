@@ -68,6 +68,7 @@ export default function Hero() {
   const stripRef = useRef<HTMLDivElement>(null);
   const diveRef = useRef<HTMLDivElement>(null);
   const flashRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
   const isAnimating = useRef(false);
   const currentRef = useRef(0);
   const hasEnteredRef = useRef(false);
@@ -140,7 +141,7 @@ export default function Hero() {
     });
   }, [slides.length]);
 
-  // Auto-advance every 4s
+  // Auto-advance strip every 4s (desktop)
   useEffect(() => {
     const timer = setInterval(() => {
       if (!isAnimating.current) advanceStrip();
@@ -207,6 +208,20 @@ export default function Hero() {
       { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
     );
   }, [bgSlide]);
+
+  // Auto-advance background on mobile (cards are hidden)
+  useEffect(() => {
+    if (slides.length < 2) return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    if (!mq.matches) return;
+    const timer = setInterval(() => {
+      if (!isAnimating.current) {
+        const next = (currentRef.current + 1) % slides.length;
+        goTo(next);
+      }
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [slides.length, goTo]);
 
   const scrollToTours = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -295,7 +310,22 @@ export default function Hero() {
       </div>
 
       {/* Content — center-left */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-5 sm:px-12 xl:px-20 2xl:px-28 pb-10 pointer-events-none">
+      <div
+        className="relative z-10 h-full flex flex-col justify-center px-5 sm:px-12 xl:px-20 2xl:px-28 pb-10 pointer-events-none"
+        onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+        onTouchEnd={(e) => {
+          if (touchStartX.current === null) return;
+          const diff = touchStartX.current - e.changedTouches[0].clientX;
+          touchStartX.current = null;
+          if (Math.abs(diff) < 50) return;
+          if (!isAnimating.current) {
+            const next = diff > 0
+              ? (currentRef.current + 1) % slides.length
+              : (currentRef.current - 1 + slides.length) % slides.length;
+            goTo(next);
+          }
+        }}
+      >
         <div ref={textRef} className="max-w-[520px] xl:max-w-[620px] pointer-events-auto">
           <h1 ref={headingRef} className="font-serif text-[2.2rem] sm:text-[3rem] lg:text-[3.8rem] xl:text-[4.5rem] 2xl:text-[5rem] leading-[1.08] text-white mb-3 sm:mb-5">
             {slides[bgSlide].title}
@@ -324,6 +354,21 @@ export default function Hero() {
             </a>
           </div>
         </div>
+      </div>
+
+      {/* Mobile dot indicators */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2.5 md:hidden">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { if (!isAnimating.current) goTo(i); }}
+            className={`rounded-full transition-all duration-300 ${
+              bgSlide === i
+                ? "w-7 h-2.5 bg-white"
+                : "w-2.5 h-2.5 bg-white/40 hover:bg-white/60"
+            }`}
+          />
+        ))}
       </div>
     </section>
   );

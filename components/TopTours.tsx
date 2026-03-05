@@ -56,7 +56,7 @@ export default function TopTours() {
   useEffect(() => {
     const check = () => {
       const w = window.innerWidth;
-      setCols(w < 640 ? 1 : w < 1024 ? 2 : 3);
+      setCols(w < 1024 ? 2 : 3);
     };
     check();
     window.addEventListener("resize", check);

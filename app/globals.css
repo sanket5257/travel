@@ -48,6 +48,12 @@ section[id] {
   display: none;
 }
 
+@media (max-width: 639px) {
+  .hide-bg-mobile {
+    background-image: none !important;
+  }
+}
+
 @keyframes nav-enter {
   from {
     transform: translateY(-80px);

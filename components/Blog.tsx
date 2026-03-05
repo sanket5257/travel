@@ -250,7 +250,7 @@ export default function Blog() {
       )}
 
       <div
-        className="bg-no-repeat relative"
+        className="bg-no-repeat relative hide-bg-mobile"
         style={{ backgroundImage: "url('/images/bg/blog-bg.png')", backgroundPosition: "center bottom", backgroundSize: "100% auto" }}
       >
         <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white to-transparent pointer-events-none" />

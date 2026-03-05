@@ -169,7 +169,7 @@ export default function About() {
 
   return (
     <div
-      className="bg-no-repeat"
+      className="bg-no-repeat hide-bg-mobile"
       style={{ backgroundImage: "url('/images/bg/whyus-bg.png')", backgroundPosition: "center bottom -50px", backgroundSize: "100% auto" }}
     >
     <section
