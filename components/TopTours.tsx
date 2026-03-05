@@ -42,7 +42,7 @@ export default function TopTours() {
             data.map((t) => ({
               name: t.name,
               slug: t.slug,
-              image: t.image,
+              image: t.image || "/img/home1.jpg",
               duration: t.duration,
               description: t.description,
               price: t.price_display,
@@ -151,15 +151,15 @@ export default function TopTours() {
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-6 mb-6">
         <div>
           <span className="tours-tag inline-block border border-gray-200 rounded-full px-4 py-1.5 text-[12px] text-gray-900 tracking-wide">
-            /Popular Treks
+            /Popular Treks/Trips
           </span>
         </div>
         <div className="sm:max-w-[480px]">
           <h2 className="tours-heading font-serif text-[2rem] sm:text-[2.75rem] xl:text-[3.25rem] leading-[1.12] text-gray-900 mb-4 sm:mb-5">
-            Upcoming Adventures & Treks
+            Upcoming Adventures & Treks/Trips
           </h2>
           <p className="tours-desc text-gray-900 text-[13px] sm:text-[14px] leading-[1.7]">
-            Carefully curated group treks across India with all-inclusive
+            Carefully curated group treks/trips across India with all-inclusive
             packages. Full meals, expert leaders, and unforgettable
             experiences&mdash;your next adventure starts here!
           </p>

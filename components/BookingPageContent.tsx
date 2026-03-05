@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronRight,
   Calendar,
+  Download,
 
   UtensilsCrossed,
   Award,
@@ -41,6 +42,7 @@ import {
   Thermometer,
   Footprints as WalkIcon,
   Send,
+  Loader2,
   type LucideIcon,
 } from "lucide-react";
 import gsap from "gsap";
@@ -81,6 +83,9 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [relatedTours, setRelatedTours] = useState<Tour[]>([]);
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [pdfForm, setPdfForm] = useState({ name: "", email: "", phone: "" });
+  const [pdfSubmitting, setPdfSubmitting] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -178,6 +183,38 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
     }
   };
 
+  const handlePdfDownload = async () => {
+    if (!pdfForm.name || !pdfForm.email || !pdfForm.phone) return;
+    setPdfSubmitting(true);
+    try {
+      await fetch("/api/pdf-downloads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...pdfForm,
+          tour_name: tour.name,
+          tour_id: tour.id || null,
+        }),
+      });
+      // Trigger download
+      const link = document.createElement("a");
+      link.href = tour.pdfUrl!;
+      link.target = "_blank";
+      link.download = `${tour.name} - Info.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setShowPdfModal(false);
+      setPdfForm({ name: "", email: "", phone: "" });
+    } catch {
+      // still try to download on error
+      if (tour.pdfUrl) window.open(tour.pdfUrl, "_blank");
+      setShowPdfModal(false);
+    } finally {
+      setPdfSubmitting(false);
+    }
+  };
+
   useEffect(() => {
     if (!pageRef.current) return;
     const ctx = gsap.context(() => {
@@ -235,7 +272,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
     { icon: MapPin, label: "Departure", value: ti.departure || "Pune" },
     { icon: MapPin, label: "Arrival", value: ti.arrival || "Pune" },
     { icon: Sun, label: "Best Season", value: ti.best_season || "Oct \u2013 Mar" },
-    { icon: Compass, label: "Trek Lead", value: ti.trek_lead || "Expert Guide" },
+    { icon: Compass, label: "Trek/Trip Lead", value: ti.trek_lead || "Expert Guide" },
     { icon: Globe, label: "Language", value: ti.language || "Hindi, English" },
     { icon: Utensils, label: "Meals", value: ti.meals || "Included" },
     ...(tour.date
@@ -252,11 +289,12 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
 
   // Gallery images for the 3-image grid on detail page
   // gallery[0] = large left, gallery[1] = top right, gallery[2] = bottom right
+  const fallbackImg = tour.image || "/img/home1.jpg";
   const g = tour.gallery || [];
   const galleryImages = [
-    g[0] || tour.image,
-    g[1] || tour.image,
-    g[2] || tour.image,
+    g[0] || fallbackImg,
+    g[1] || fallbackImg,
+    g[2] || fallbackImg,
   ];
 
   return (
@@ -264,7 +302,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
       {/* ══════ Hero Banner ══════ */}
       <div className="relative h-[220px] sm:h-[280px] lg:h-[340px] overflow-hidden">
         <Image
-          src={tour.image}
+          src={fallbackImg}
           alt={tour.name}
           fill
           className="tourm-hero-img object-cover"
@@ -282,7 +320,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             </Link>
             <ChevronRight className="w-3 h-3" />
             <Link href="/#tours" className="hover:text-white transition">
-              Treks
+              Treks/Trips
             </Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-white font-medium">{tour.name}</span>
@@ -297,7 +335,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           {/* Large left image */}
           <div className="relative rounded-lg overflow-hidden shadow-lg">
             <Image
-              src={galleryImages[0] || tour.image}
+              src={galleryImages[0]}
               alt={tour.name}
               fill
               className="object-cover"
@@ -308,7 +346,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           <div className="hidden sm:grid grid-rows-2 gap-3">
             <div className="relative rounded-lg overflow-hidden shadow-lg">
               <Image
-                src={galleryImages[1] || tour.image}
+                src={galleryImages[1]}
                 alt={`${tour.name} view`}
                 fill
                 className="object-cover object-[center_30%]"
@@ -317,7 +355,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             </div>
             <div className="relative rounded-lg overflow-hidden shadow-lg">
               <Image
-                src={galleryImages[2] || tour.image}
+                src={galleryImages[2]}
                 alt={`${tour.name} detail`}
                 fill
                 className="object-cover object-[center_70%]"
@@ -354,17 +392,19 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                 </span>
               </p>
             </div>
-            <button
-              className="text-white text-[13px] font-semibold px-6 py-3 rounded-full transition-colors whitespace-nowrap"
-              style={{ backgroundColor: PRIMARY }}
-              onClick={() =>
-                document
-                  .getElementById("enquiry-form")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              CHECK AVAILABILITY
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                className="text-white text-[13px] font-semibold px-6 py-3 rounded-full transition-colors whitespace-nowrap"
+                style={{ backgroundColor: PRIMARY }}
+                onClick={() =>
+                  document
+                    .getElementById("enquiry-form")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+              >
+                CHECK AVAILABILITY
+              </button>
+            </div>
           </div>
         </div>
 
@@ -394,6 +434,36 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             ))}
           </div>
         </div>
+
+        {/* ── Download PDF Banner ── */}
+        {tour.pdfUrl && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border border-gray-200 rounded-lg p-5 sm:p-6 mb-10 bg-gray-50">
+            <div className="flex items-center gap-4">
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
+                style={{ backgroundColor: `${PRIMARY}12` }}
+              >
+                <Download className="w-5 h-5" style={{ color: PRIMARY }} />
+              </div>
+              <div>
+                <p className="text-[15px] font-semibold text-[#232323]">
+                  Download Trek/Trip Requirements & Info
+                </p>
+                <p className="text-[13px] text-gray-500">
+                  Get the complete details, packing list & requirements as PDF
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowPdfModal(true)}
+              className="flex items-center gap-2 text-white text-[13px] font-semibold px-6 py-3 rounded-full transition-colors whitespace-nowrap shrink-0"
+              style={{ backgroundColor: PRIMARY }}
+            >
+              <Download className="w-4 h-4" />
+              DOWNLOAD PDF
+            </button>
+          </div>
+        )}
 
         {/* ── Tabs ── */}
         <div className="tourm-tabs-section">
@@ -574,6 +644,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                   </div>
                 )}
 
+                {tour.exclusions && tour.exclusions.length > 0 && (
                 <div>
                   <h3 className="text-[15px] font-bold text-[#232323] mb-4 flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
@@ -582,11 +653,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                     The Cost Excludes
                   </h3>
                   <ul className="space-y-3">
-                    {[
-                      "Personal expenses",
-                      "Travel insurance",
-                      "Anything not mentioned in inclusions",
-                    ].map((item) => (
+                    {tour.exclusions.map((item) => (
                       <li
                         key={item}
                         className="flex items-start gap-2.5"
@@ -599,6 +666,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                     ))}
                   </ul>
                 </div>
+                )}
               </div>
             </div>
           )}
@@ -610,20 +678,20 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                 Safety Measures
               </h2>
               <p className="text-[15px] text-gray-600 leading-[1.85] mb-6">
-                Your safety is our top priority. We follow strict safety protocols on every trek to ensure a secure and enjoyable experience.
+                Your safety is our top priority. We follow strict safety protocols on every trek/trip to ensure a secure and enjoyable experience.
               </p>
               <ul className="space-y-4">
                 {(tour.safetyMeasures && tour.safetyMeasures.length > 0
                   ? tour.safetyMeasures
                   : [
-                      "Certified and experienced trek leaders on every trip",
+                      "Certified and experienced trek/trip leaders on every trip",
                       "Comprehensive first-aid kit carried at all times",
                       "Regular weather monitoring and route assessments",
                       "Emergency evacuation plan and communication devices",
-                      "Mandatory safety briefing before every trek",
+                      "Mandatory safety briefing before every trek/trip",
                       "Participants must disclose any medical conditions beforehand",
-                      "Proper acclimatization schedule for high-altitude treks",
-                      "Adequate hydration and nutrition guidance throughout the trek",
+                      "Proper acclimatization schedule for high-altitude treks/trips",
+                      "Adequate hydration and nutrition guidance throughout the trek/trip",
                     ]
                 ).map((text) => (
                   <li key={text} className="flex items-start gap-3">
@@ -656,12 +724,12 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
                   ? tour.cancellationPolicy
                   : [
                       "30+ days before departure — Full refund minus processing fee of ₹500",
-                      "15–29 days before departure — 50% refund of the total trek fee",
-                      "7–14 days before departure — 25% refund of the total trek fee",
+                      "15–29 days before departure — 50% refund of the total trek/trip fee",
+                      "7–14 days before departure — 25% refund of the total trek/trip fee",
                       "Less than 7 days before departure — No refund applicable",
-                      "In case of natural calamities or government restrictions, the trek may be rescheduled with full credit",
-                      "Minimum number of participants is required for the trek to proceed. If not met, a full refund or alternative date will be offered",
-                      "No refund for no-shows or early departures from the trek",
+                      "In case of natural calamities or government restrictions, the trek/trip may be rescheduled with full credit",
+                      "Minimum number of participants is required for the trek/trip to proceed. If not met, a full refund or alternative date will be offered",
+                      "No refund for no-shows or early departures from the trek/trip",
                       "Transfer of booking to another person is allowed up to 7 days before departure",
                     ]
                 ).map((text, i) => (
@@ -763,7 +831,7 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
             Book your spot via the form below.
           </h3>
           <p className="text-[13px] text-gray-400 mb-6 text-center">
-            Trek: {tour.name}
+            Trek/Trip: {tour.name}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -995,6 +1063,83 @@ export default function BookingPageContent({ tour }: { tour: Tour }) {
           </div>
         </div>
       </div>
+
+      {/* ══════ PDF Download Modal ══════ */}
+      {showPdfModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowPdfModal(false)} />
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8">
+            <button
+              onClick={() => setShowPdfModal(false)}
+              className="absolute top-4 right-4 p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <XIcon className="w-5 h-5" />
+            </button>
+
+            <div className="text-center mb-6">
+              <div
+                className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
+                style={{ backgroundColor: `${PRIMARY}10` }}
+              >
+                <Download className="w-6 h-6" style={{ color: PRIMARY }} />
+              </div>
+              <h3 className="font-serif text-[1.3rem] text-[#232323] mb-1">
+                Download Trek/Trip Info
+              </h3>
+              <p className="text-[13px] text-gray-500">
+                Fill in your details to download the {tour.name} PDF
+              </p>
+            </div>
+
+            <div className="space-y-3 mb-6">
+              <div className="relative">
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Full Name *"
+                  value={pdfForm.name}
+                  onChange={(e) => setPdfForm((p) => ({ ...p, name: e.target.value }))}
+                  className={`${inputClass} pl-10`}
+                />
+              </div>
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <input
+                  type="email"
+                  placeholder="Email Address *"
+                  value={pdfForm.email}
+                  onChange={(e) => setPdfForm((p) => ({ ...p, email: e.target.value }))}
+                  className={`${inputClass} pl-10`}
+                />
+              </div>
+              <div className="relative">
+                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <input
+                  type="tel"
+                  placeholder="Phone Number *"
+                  value={pdfForm.phone}
+                  onChange={(e) => setPdfForm((p) => ({ ...p, phone: e.target.value }))}
+                  className={`${inputClass} pl-10`}
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={handlePdfDownload}
+              disabled={pdfSubmitting || !pdfForm.name || !pdfForm.email || !pdfForm.phone}
+              className="w-full flex items-center justify-center gap-2 text-white text-[14px] font-semibold px-6 py-3.5 rounded-full transition-colors disabled:opacity-50"
+              style={{ backgroundColor: PRIMARY }}
+            >
+              {pdfSubmitting ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              {pdfSubmitting ? "Processing..." : "Download PDF"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

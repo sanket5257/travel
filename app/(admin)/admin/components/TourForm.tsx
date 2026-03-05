@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Loader2, Upload, FileText, X } from "lucide-react";
 import ImageUploader from "./ImageUploader";
 import ItineraryEditor from "./ItineraryEditor";
 import InclusionsEditor from "./InclusionsEditor";
@@ -31,6 +31,7 @@ interface TourData {
   price_display: string;
   date: string;
   inclusions: string[];
+  exclusions: string[];
   itinerary_title: string;
   itinerary_days: ItineraryDay[];
   itinerary_sections: ItineraryDay[];
@@ -41,6 +42,7 @@ interface TourData {
   faq: FaqItem[];
   trekking_stories: string;
   hero_image: string;
+  pdf_url: string;
   is_active: boolean;
   sort_order: number;
 }
@@ -76,6 +78,7 @@ const defaultData: TourData = {
   price_display: "",
   date: "",
   inclusions: [],
+  exclusions: [],
   itinerary_title: "",
   itinerary_days: [],
   itinerary_sections: [],
@@ -86,9 +89,71 @@ const defaultData: TourData = {
   faq: [],
   trekking_stories: "",
   hero_image: "",
+  pdf_url: "",
   is_active: true,
   sort_order: 0,
 };
+
+function PdfUploader({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.url) onChange(data.url);
+    } catch (err) {
+      console.error("Upload failed:", err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div>
+      {value ? (
+        <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <FileText className="w-8 h-8 text-gray-500 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 truncate">{value.split("/").pop()}</p>
+            <a href={value} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:text-blue-700">
+              View PDF
+            </a>
+          </div>
+          <button type="button" onClick={() => onChange("")} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="w-full h-32 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center gap-2.5 hover:border-gray-400 hover:bg-gray-50/50 transition-all disabled:opacity-50 group"
+        >
+          {uploading ? (
+            <Loader2 className="w-7 h-7 text-gray-400 animate-spin" />
+          ) : (
+            <div className="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+              <Upload className="w-5 h-5 text-gray-500" />
+            </div>
+          )}
+          <div className="text-center">
+            <span className="text-sm font-medium text-gray-600">{uploading ? "Uploading..." : "Click to upload PDF"}</span>
+            <p className="text-xs text-gray-400 mt-0.5">PDF files only</p>
+          </div>
+        </button>
+      )}
+      <input ref={inputRef} type="file" accept=".pdf,application/pdf" className="hidden" onChange={handleUpload} />
+    </div>
+  );
+}
 
 function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
   return (
@@ -103,7 +168,16 @@ function Section({ title, description, children }: { title: string; description?
 }
 
 export default function TourForm({ initialData, onSubmit }: Props) {
-  const [form, setForm] = useState<TourData>({ ...defaultData, ...initialData });
+  const [form, setForm] = useState<TourData>(() => {
+    const merged = { ...defaultData, ...initialData };
+    // Ensure null values from DB become empty strings for form inputs
+    for (const key of Object.keys(merged) as (keyof TourData)[]) {
+      if (merged[key] === null || merged[key] === undefined) {
+        (merged as Record<string, unknown>)[key] = defaultData[key];
+      }
+    }
+    return merged;
+  });
   const [submitting, setSubmitting] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
 
@@ -304,6 +378,11 @@ export default function TourForm({ initialData, onSubmit }: Props) {
         <InclusionsEditor value={form.inclusions} onChange={(items) => update("inclusions", items)} />
       </Section>
 
+      {/* Exclusions */}
+      <Section title="Exclusions" description="What's NOT included in this tour package.">
+        <InclusionsEditor label="Exclusions" value={form.exclusions} onChange={(items) => update("exclusions", items)} placeholder="e.g. Personal expenses, Travel insurance" />
+      </Section>
+
       {/* Itinerary */}
       <Section title="Itinerary" description="Day-by-day breakdown of the tour.">
         <div className="space-y-6">
@@ -404,6 +483,11 @@ export default function TourForm({ initialData, onSubmit }: Props) {
           className="w-full border border-gray-200 rounded-lg px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-shadow resize-none"
           placeholder="Write the trail story for this tour..."
         />
+      </Section>
+
+      {/* PDF Upload */}
+      <Section title="Downloadable PDF" description="Upload a requirements/info PDF that users can download from the booking page.">
+        <PdfUploader value={form.pdf_url} onChange={(url) => update("pdf_url", url)} />
       </Section>
 
       {/* QR Code & Settings */}

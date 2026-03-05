@@ -10,6 +10,7 @@ export interface DbTour {
   price_display: string;
   date: string | null;
   inclusions: string[];
+  exclusions: string[];
   itinerary_title: string | null;
   itinerary_days: { title: string; items: string[] }[] | null;
   itinerary_sections: { title: string; items: string[] }[] | null;
@@ -20,6 +21,7 @@ export interface DbTour {
   faq: { question: string; answer: string }[] | null;
   trekking_stories: string | null;
   hero_image: string | null;
+  pdf_url: string | null;
   is_active: boolean;
   sort_order: number;
   created_at: string;

@@ -7,18 +7,17 @@ import { Facebook, Instagram, Phone, MessageCircle, Send } from "lucide-react";
 const footerNav = [
   { label: "Home", href: "/#hero" },
   { label: "About Us", href: "/#about" },
-  { label: "Treks", href: "/#tours" },
+  { label: "Treks/Trips", href: "/#tours" },
   { label: "Blog", href: "/#blog" },
-  { label: "Trekking Leaders", href: "/leaders" },
   { label: "Reviews", href: "/#testimonials" },
   { label: "Contact", href: "/#contact" },
 ];
 
 const footerLinks = {
   Explore: [
-    { label: "Top Treks", href: "/#tours" },
-    { label: "About Us", href: "/#about" },
-    { label: "Trekking Leaders", href: "/leaders" },
+    { label: "Top Treks/Trips", href: "/#tours" },
+    { label: "Our Story", href: "/about#our-story" },
+    { label: "Trek Leaders", href: "/about#trek-leaders" },
     { label: "Blog", href: "/#blog" },
     { label: "FAQs", href: "/#faq" },
   ],
@@ -51,10 +50,11 @@ export default function Footer() {
 
     e.preventDefault();
 
-    // Links to a different page (e.g. /policies) — navigate to top
+    // Links to a different page (e.g. /policies, /about#section)
     if (href.startsWith("/") && !href.startsWith("/#")) {
+      const hasHash = href.includes("#");
       router.push(href);
-      window.scrollTo({ top: 0 });
+      if (!hasHash) window.scrollTo({ top: 0 });
       return;
     }
 
@@ -95,9 +95,9 @@ export default function Footer() {
               const el = document.querySelector("#contact");
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }}
-            className="inline-flex items-center gap-3 border border-gray-900 text-gray-900 px-8 py-3.5 rounded-full text-[13px] font-semibold tracking-wide uppercase hover:bg-gray-900 hover:text-white transition-colors"
+            className="inline-flex items-center gap-3 bg-gray-900 border border-gray-900 text-white px-8 py-3.5 rounded-full text-[13px] font-semibold tracking-wide uppercase hover:bg-gray-800 hover:border-gray-800 transition-colors"
           >
-            Book a Trek
+            Book a Trek/Trip
             <span className="text-[11px]">&rarr;</span>
           </button>
         </div>

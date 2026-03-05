@@ -22,10 +22,11 @@ export default function AdminToursPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [toggling, setToggling] = useState<string | null>(null);
 
   const fetchTours = async () => {
     try {
-      const res = await fetch("/api/tours");
+      const res = await fetch("/api/tours?all=true");
       if (!res.ok) throw new Error("Failed to load tours");
       const data = await res.json();
       setTours(data);
@@ -37,6 +38,17 @@ export default function AdminToursPage() {
   };
 
   useEffect(() => { fetchTours(); }, []);
+
+  const toggleActive = async (id: string, currentStatus: boolean) => {
+    setToggling(id);
+    await fetch(`/api/tours/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ is_active: !currentStatus }),
+    });
+    setToggling(null);
+    fetchTours();
+  };
 
   const deleteTour = async (id: string, name: string) => {
     if (!confirm(`Delete "${name}"? This action cannot be undone.`)) return;
@@ -123,10 +135,18 @@ export default function AdminToursPage() {
                   <td className="px-6 py-4 text-sm text-gray-600">{tour.duration}</td>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900">{tour.price_display}</td>
                   <td className="px-6 py-4">
-                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${tour.is_active ? "bg-green-50 text-green-700 ring-1 ring-green-600/20" : "bg-gray-100 text-gray-600 ring-1 ring-gray-500/10"}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${tour.is_active ? "bg-green-500" : "bg-gray-400"}`} />
+                    <button
+                      onClick={() => toggleActive(tour.id, tour.is_active)}
+                      disabled={toggling === tour.id}
+                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors disabled:opacity-50 ${tour.is_active ? "bg-green-50 text-green-700 ring-1 ring-green-600/20 hover:bg-green-100" : "bg-gray-100 text-gray-600 ring-1 ring-gray-500/10 hover:bg-gray-200"}`}
+                    >
+                      {toggling === tour.id ? (
+                        <Loader2 className="w-3 h-3 animate-spin mr-1.5" />
+                      ) : (
+                        <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${tour.is_active ? "bg-green-500" : "bg-gray-400"}`} />
+                      )}
                       {tour.is_active ? "Active" : "Inactive"}
-                    </span>
+                    </button>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-1">

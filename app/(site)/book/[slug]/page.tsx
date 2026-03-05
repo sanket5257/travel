@@ -4,6 +4,8 @@ import BookingPageContent from "@/components/BookingPageContent";
 import type { Tour } from "@/lib/tours";
 import type { DbTour } from "@/lib/supabase/types";
 
+export const dynamic = "force-dynamic";
+
 function dbTourToTour(t: DbTour): Tour {
   return {
     id: t.id,
@@ -16,6 +18,7 @@ function dbTourToTour(t: DbTour): Tour {
     price: t.price_display,
     date: t.date || undefined,
     inclusions: t.inclusions || undefined,
+    exclusions: t.exclusions || undefined,
     itineraryTitle: t.itinerary_title || undefined,
     itineraryDays: t.itinerary_days || undefined,
     itinerarySections: t.itinerary_sections || undefined,
@@ -26,6 +29,7 @@ function dbTourToTour(t: DbTour): Tour {
     faq: t.faq || undefined,
     trekkingStories: typeof t.trekking_stories === "string" ? t.trekking_stories : undefined,
     heroImage: t.hero_image || undefined,
+    pdfUrl: t.pdf_url || undefined,
   };
 }
 

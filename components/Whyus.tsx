@@ -14,15 +14,15 @@ const features = [
     num: "01",
     image:
       "/images/whyus/leaders.jpg",
-    alt: "Expert trek leader guiding a group through Western Ghats",
-    text: "Professionally managed treks led by friendly, experienced leaders who know every trail, every shortcut, and every story along the way.",
+    alt: "Expert trek/trip leader guiding a group through Western Ghats",
+    text: "Professionally managed treks/trips led by friendly, experienced leaders who know every trail, every shortcut, and every story along the way.",
   },
   {
     num: "02",
     image:
       "/images/whyus/safety.jpg",
     alt: "Safe camping setup at Kedarkantha base",
-    text: "Safety-first approach with basic first aid kits, proper gear checks, and well-planned routes\u2014so you can trek with complete peace of mind.",
+    text: "Safety-first approach with basic first aid kits, proper gear checks, and well-planned routes\u2014so you can trek/trip with complete peace of mind.",
   },
   {
     num: "03",
@@ -35,7 +35,7 @@ const features = [
     num: "04",
     image:
       "/images/whyus/community.jpg",
-    alt: "Community of trekkers at Kalsubai summit",
+    alt: "Community of trekkers/travellers at Kalsubai summit",
     text: "Community-driven adventures that build confidence, connection, and lifelong memories. Every trip is a chance to make friends for life.",
   },
 ];

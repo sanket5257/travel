@@ -1,14 +1,15 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const defaultFilters = ["Trek Tips", "Destinations", "Travel Stories"];
+const defaultFilters = ["Trek/Trip Tips", "Destinations", "Travel Stories"];
 
 const localBlogs = [
   {
@@ -17,7 +18,8 @@ const localBlogs = [
     category: "Destinations",
     date: "JAN 15, 2025",
     readTime: "8 MIN READ",
-    title: "Into the Clouds: A First-Timer's Guide to Himalayan Treks",
+    title: "Into the Clouds: A First-Timer's Guide to Himalayan Treks/Trips",
+    content: "Discover the magic of the Himalayas with our comprehensive guide for first-time trekkers. Learn about essential preparations, what to expect on the trail, and how to make the most of your mountain adventure.",
   },
   {
     image: "/images/blog/forts.jpg",
@@ -25,7 +27,8 @@ const localBlogs = [
     category: "Travel Stories",
     date: "FEB 02, 2025",
     readTime: "6 MIN READ",
-    title: "Fort Treks of the Sahyadris: History Beneath Your Feet",
+    title: "Fort Treks/Trips of the Sahyadris: History Beneath Your Feet",
+    content: "Journey through time as we explore the magnificent forts of the Sahyadri range. Each fort tells a story of valor, strategy, and the rich Maratha heritage that shaped this region.",
   },
   {
     image: "/images/tours/kedarkantha.jpg",
@@ -34,14 +37,16 @@ const localBlogs = [
     date: "DEC 20, 2024",
     readTime: "10 MIN READ",
     title: "Kedarkantha in Winter: Snow, Silence, and Summit Glory",
+    content: "Experience the pristine beauty of Kedarkantha in winter. From snow-covered trails to breathtaking summit views, this trek offers an unforgettable winter wonderland experience.",
   },
   {
     image: "/images/tours/triund.jpg",
-    tag: "TREK TIPS",
-    category: "Trek Tips",
+    tag: "TREK/TRIP TIPS",
+    category: "Trek/Trip Tips",
     date: "NOV 10, 2024",
     readTime: "5 MIN READ",
-    title: "Pack Light, Trek Far: The Ultimate Gear Checklist for Beginners",
+    title: "Pack Light, Trek/Trip Far: The Ultimate Gear Checklist for Beginners",
+    content: "Master the art of packing light with our essential gear checklist. Learn what to bring, what to leave behind, and how to prepare for a comfortable and safe trekking experience.",
   },
 ];
 
@@ -52,6 +57,7 @@ interface BlogItem {
   date: string;
   readTime: string;
   title: string;
+  content?: string;
 }
 
 export default function Blog() {
@@ -60,19 +66,33 @@ export default function Blog() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [blogs, setBlogs] = useState<BlogItem[]>(localBlogs);
   const [filters, setFilters] = useState<string[]>(["All", ...defaultFilters]);
+  const [selectedBlog, setSelectedBlog] = useState<BlogItem | null>(null);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedBlog) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedBlog]);
 
   useEffect(() => {
     fetch("/api/blogs")
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          const mapped = data.map((b: { image: string; tag: string; category: string; date: string; read_time: string; title: string }) => ({
+          const mapped = data.map((b: { image: string; tag: string; category: string; date: string; read_time: string; title: string; content?: string }) => ({
             image: b.image,
             tag: b.tag,
             category: b.category,
             date: b.date,
             readTime: b.read_time,
             title: b.title,
+            content: b.content,
           }));
           setBlogs(mapped);
           const categories = Array.from(new Set(mapped.map((b: BlogItem) => b.category).filter(Boolean)));
@@ -115,6 +135,7 @@ export default function Blog() {
 
   // Drag-to-scroll for desktop
   const isDragging = useRef(false);
+  const didDrag = useRef(false);
   const dragStartX = useRef(0);
   const dragScrollLeft = useRef(0);
 
@@ -122,21 +143,23 @@ export default function Blog() {
     const el = scrollRef.current;
     if (!el) return;
     isDragging.current = true;
+    didDrag.current = false;
     dragStartX.current = e.clientX;
     dragScrollLeft.current = el.scrollLeft;
-    el.setPointerCapture(e.pointerId);
     el.style.cursor = "grabbing";
   }, []);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging.current || !scrollRef.current) return;
-    e.preventDefault();
     const dx = e.clientX - dragStartX.current;
-    scrollRef.current.scrollLeft = dragScrollLeft.current - dx;
+    if (Math.abs(dx) > 5) didDrag.current = true;
+    if (didDrag.current) {
+      e.preventDefault();
+      scrollRef.current.scrollLeft = dragScrollLeft.current - dx;
+    }
   }, []);
 
-  const onPointerUp = useCallback((e: React.PointerEvent) => {
-    if (!isDragging.current) return;
+  const onPointerUp = useCallback(() => {
     isDragging.current = false;
     if (scrollRef.current) scrollRef.current.style.cursor = "grab";
   }, []);
@@ -170,11 +193,67 @@ export default function Blog() {
   }, []);
 
   return (
-    <div
-      className="bg-no-repeat relative"
-      style={{ backgroundImage: "url('/images/bg/blog-bg.png')", backgroundPosition: "center bottom", backgroundSize: "100% auto" }}
-    >
-    <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+    <>
+      {/* Blog Popup Modal — rendered via portal to avoid stacking context issues */}
+      {selectedBlog && createPortal(
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={() => setSelectedBlog(null)}
+          style={{ margin: 0 }}
+        >
+          <div
+            className="relative bg-white rounded-[20px] max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedBlog(null)}
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-gray-900 transition-colors shadow-lg"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Image */}
+            <div className="rounded-t-[20px] overflow-hidden">
+              <Image
+                src={selectedBlog.image}
+                alt={selectedBlog.title}
+                width={768}
+                height={512}
+                className="w-full h-auto object-contain"
+                sizes="(max-width: 768px) 100vw, 768px"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-[11px] font-bold tracking-wider text-[#2a6b5a]">
+                  {selectedBlog.tag}
+                </span>
+                <span className="text-[11px] text-gray-400">{selectedBlog.date}</span>
+                <span className="text-[11px] text-gray-400">&bull;</span>
+                <span className="text-[11px] text-gray-400">{selectedBlog.readTime}</span>
+              </div>
+
+              <h2 className="font-serif text-[1.75rem] sm:text-[2.25rem] leading-[1.15] text-[#1a2332] mb-4">
+                {selectedBlog.title}
+              </h2>
+
+              <p className="text-[14px] sm:text-[15px] leading-[1.8] text-gray-700">
+                {selectedBlog.content || "Content coming soon..."}
+              </p>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      <div
+        className="bg-no-repeat relative"
+        style={{ backgroundImage: "url('/images/bg/blog-bg.png')", backgroundPosition: "center bottom", backgroundSize: "100% auto" }}
+      >
+        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     <section
       ref={sectionRef}
       id="blog"
@@ -190,7 +269,7 @@ export default function Blog() {
             Every Article Is Crafted To Bring You Closer To The Mountains,
             Fostering A Deeper Connection With The Trails Around Us.{" "}
             <span className="font-semibold">
-              Get Inspired. Get Informed. Get Trekking.
+              Get Inspired. Get Informed. Get Trekking/Travelling.
             </span>
           </p>
         </div>
@@ -238,22 +317,30 @@ export default function Blog() {
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
           >
-            {filtered.map((blog, i) => (
+            {filtered.map((blog) => (
               <div
                 key={blog.title}
-                className="blog-card flex-shrink-0 w-[280px] sm:w-[320px] lg:w-auto cursor-pointer group"
+                className="blog-card shrink-0 w-[280px] sm:w-[320px] lg:w-auto cursor-pointer group"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!didDrag.current) {
+                    setSelectedBlog(blog);
+                  }
+                }}
               >
                 {/* Image */}
-                <div
-                  className="relative w-full rounded-[12px] overflow-hidden h-[280px] sm:h-[320px] lg:h-[360px]"
-                >
+                <div className="relative w-full rounded-[12px] overflow-hidden h-[280px] sm:h-[320px] lg:h-[360px]">
                   <Image
                     src={blog.image}
                     alt={blog.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 640px) 280px, 340px"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    <p className="text-[13px] font-semibold line-clamp-2">{blog.title}</p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -261,6 +348,7 @@ export default function Blog() {
         </div>
       </div>
     </section>
-    </div>
+      </div>
+    </>
   );
 }

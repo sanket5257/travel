@@ -19,6 +19,7 @@ export interface Tour {
   price: string;
   date?: string;
   inclusions?: string[];
+  exclusions?: string[];
   itineraryTitle?: string;
   itineraryDays?: ItineraryDay[];
   itinerarySections?: ItinerarySection[];
@@ -29,6 +30,7 @@ export interface Tour {
   faq?: { question: string; answer: string }[];
   trekkingStories?: string;
   heroImage?: string;
+  pdfUrl?: string;
 }
 
 export function toSlug(name: string): string {

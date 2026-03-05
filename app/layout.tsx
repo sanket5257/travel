@@ -18,7 +18,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "To The Moon Wayfarer — Chase Horizons. Conquer Trails. Create Stories.",
   description:
-    "Curated group treks and adventures across India. Safe, affordable, and transformative travel that builds confidence, connection, and lifelong memories.",
+    "Curated group treks/trips and adventures across India. Safe, affordable, and transformative travel that builds confidence, connection, and lifelong memories.",
 };
 
 export default function RootLayout({

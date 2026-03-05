@@ -72,38 +72,39 @@ export default function Hero() {
   const currentRef = useRef(0);
   const hasEnteredRef = useRef(false);
 
-  const [slides, setSlides] = useState<Slide[]>(defaultSlides);
+  const [slides, setSlides] = useState<Slide[]>([]);
   const [bgSlide, setBgSlide] = useState(0);
   const [stripPos, setStripPos] = useState(0);
 
-  // Fetch dynamic tour data — replace defaults once loaded
+  // Fetch dynamic tour data — fall back to defaults on error
   useEffect(() => {
     fetch("/api/tours")
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length >= 2) {
           const mapped: Slide[] = data.slice(0, 8).map((t: Record<string, string>) => ({
-            image: t.hero_image || t.image,
+            image: t.hero_image || t.image || "/img/home1.jpg",
             destination: t.name,
             subtitle: t.duration,
             title: t.name,
             description: t.description,
-            cardImage: t.image,
+            cardImage: t.image || "/img/home1.jpg",
           }));
           setSlides(mapped);
-          setBgSlide(0);
-          setStripPos(0);
-          currentRef.current = 0;
+        } else {
+          setSlides(defaultSlides);
         }
       })
-      .catch(() => {});
+      .catch(() => { setSlides(defaultSlides); });
   }, []);
 
   // Queue: 4 cards (2 full + half peek + 1 offscreen for slide-in)
   const queue = [1, 2, 3, 4].map((offset) => slides[(stripPos + offset) % slides.length]);
 
-  // Entrance
+  // Entrance — runs once slides are loaded
   useEffect(() => {
+    if (slides.length === 0) return;
+
     const tl = gsap.timeline({ delay: 0.4 });
 
     if (imagesRef.current[0]) {
@@ -116,11 +117,11 @@ export default function Hero() {
       .from(btnRef.current, { y: 40, opacity: 0, duration: 0.8, ease: "expo.out" }, "-=0.7")
       .from(stripRef.current, { x: 300, opacity: 0, duration: 1.2, ease: "expo.out" }, "-=1.2");
 
-    return () => { tl.kill(); };
-  }, []);
+    hasEnteredRef.current = true;
 
-  // Mark entrance done
-  useEffect(() => { hasEnteredRef.current = true; }, []);
+    return () => { tl.kill(); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slides.length > 0]);
 
   // Auto-advance strip: first card fades out, strip slides left, then snap with new content
   const advanceStrip = useCallback(() => {
@@ -211,6 +212,15 @@ export default function Hero() {
     e.preventDefault();
     document.querySelector("#tours")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  if (slides.length === 0) {
+    return (
+      <section
+        id="hero"
+        className="relative mx-2 sm:mx-3 xl:mx-5 mt-2 rounded-[20px] sm:rounded-[28px] overflow-hidden h-[85vh] sm:h-[93vh] bg-gray-900"
+      />
+    );
+  }
 
   return (
     <section

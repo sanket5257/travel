@@ -9,29 +9,29 @@ gsap.registerPlugin(ScrollTrigger);
 
 const faqs = [
   {
-    question: "Do you offer customizable travel itineraries?",
+    question: "Is transportation included in the package?",
     answer:
-      "Yes! We specialize in creating personalized itineraries tailored to your preferences. Whether you're interested in cultural landmarks, outdoor adventures, or unique experiences, our team will help craft the perfect journey.",
+      "Yes, most of our treks and trips include travel from Pune and back. The exact details of transport are mentioned in the itinerary of each trek or trip.",
   },
   {
-    question: "What is the best time to visit Japan?",
+    question: "Is the trek safe for solo travelers?",
     answer:
-      "Japan is beautiful year-round, but the most popular seasons are spring (March–May) for cherry blossoms and autumn (September–November) for vibrant foliage. Summer offers festivals, while winter is ideal for skiing and hot springs.",
+      "Absolutely. Many of our participants join solo. We maintain a friendly group environment and experienced trek leaders to ensure everyone feels safe and comfortable.",
   },
   {
-    question: "Are your tours guided?",
+    question: "Can I cancel my booking?",
     answer:
-      "Yes, all our tours come with experienced, English-speaking guides who are passionate about sharing Japan's culture, history, and hidden gems. Private and small-group options are available.",
+      "Yes, cancellations are allowed as per our Refund Policy mentioned on the website. The refund amount depends on the time of cancellation before the event date.",
   },
   {
-    question: "Do you provide assistance with visas?",
+    question: "Do you provide trek insurance?",
     answer:
-      "Absolutely. We provide guidance on visa requirements and documentation to ensure a smooth application process. Our team will walk you through every step based on your nationality and travel plans.",
+      "For selected treks and trips, basic trek insurance coverage may be included. Details about insurance coverage will be clearly mentioned in the trek information.",
   },
   {
-    question: "What is included in the trip cost?",
+    question: "Are washroom facilities available during treks?",
     answer:
-      "Our packages typically include accommodation, guided tours, transportation within Japan, select meals, and entrance fees. International flights and travel insurance are not included but can be arranged upon request.",
+      "Washroom facilities are usually available at base villages or hotels, but during the trek route there may be limited or no washroom facilities, as most treks are in natural mountain environments.",
   },
 ];
 
@@ -166,12 +166,12 @@ export default function FAQ() {
           </div>
 
           {/* Still Have Questions card */}
-          <div className="faq-cta-card absolute bottom-6 right-6 bg-white rounded-2xl p-6 sm:p-7 max-w-[280px] shadow-lg">
+          <div className="faq-cta-card absolute -bottom-20 -right-14 bg-white rounded-2xl p-6 sm:p-7 max-w-[280px] shadow-lg">
             <h3 className="font-serif text-[1.25rem] sm:text-[1.4rem] text-gray-900 leading-tight mb-2">
               Still Have Questions?
             </h3>
             <p className="text-gray-500 text-[13px] leading-[1.7] mb-5">
-              Need more help planning your perfect Japan journey? Our team is
+              Need more help planning your next trek or trip? Our team is
               here to assist you with any questions or special requests
             </p>
             <a

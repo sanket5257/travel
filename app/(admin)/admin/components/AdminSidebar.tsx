@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Map, FileText, CalendarCheck, LogOut, Mountain } from "lucide-react";
+import { Map, FileText, CalendarCheck, Download, LogOut, Mountain } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/tours", label: "Tours", icon: Map },
   { href: "/admin/blogs", label: "Blogs", icon: FileText },
   { href: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
+  { href: "/admin/pdf-downloads", label: "PDF Downloads", icon: Download },
 ];
 
 export default function AdminSidebar() {

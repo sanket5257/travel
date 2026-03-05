@@ -107,7 +107,7 @@ export default function Destinations() {
           <div className="dest-right sm:max-w-[340px] sm:text-right">
             <p className="text-gray-900 text-[13px] sm:text-[14px] leading-[1.7] mb-4 sm:mb-5">
               From the Western Ghats to the Himalayas, explore India's most
-              stunning trek regions with adventures for every skill level.
+              stunning trek/trip regions with adventures for every skill level.
             </p>
             <button
               onClick={scrollToTours}
@@ -143,7 +143,7 @@ export default function Destinations() {
               </div>
               {/* Badge */}
               <span className="absolute top-4 left-4 z-10 bg-white text-gray-900 text-[11px] font-semibold px-3.5 py-1.5 rounded-full shadow-sm">
-                {dest.count} Treks
+                {dest.count} Treks/Trips
               </span>
               {/* Country */}
               <h3 className="absolute bottom-5 left-5 text-[20px] font-semibold text-white z-10">
@@ -155,7 +155,7 @@ export default function Destinations() {
             <div className="hidden sm:block relative bg-gray-50/80 rounded-[14px] p-2.5 hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-500">
               {/* Badge */}
               <span className="absolute top-5 left-5 z-10 bg-white text-gray-900 text-[11px] font-semibold px-3.5 py-1.5 rounded-full shadow-sm">
-                {dest.count} Treks
+                {dest.count} Treks/Trips
               </span>
               {/* Two Images */}
               <div className="flex gap-2 mb-3">

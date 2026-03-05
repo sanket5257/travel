@@ -144,7 +144,7 @@ export default function Contact() {
           </h2>
 
           <p className="contact-desc text-gray-500 text-[14px] sm:text-[15px] leading-[1.7] max-w-[440px] mb-8 sm:mb-10">
-            Have questions about an upcoming trek or want to plan a custom
+            Have questions about an upcoming trek/trip or want to plan a custom
             adventure? Reach out and we&apos;ll get back to you within 24 hours.
           </p>
 
@@ -225,7 +225,7 @@ export default function Contact() {
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 outline-none focus:border-gray-400 transition appearance-none bg-white"
                 >
                   <option value="" disabled>
-                    Select a trek
+                    Select a trek/trip
                   </option>
                   {trekOptions.map((opt) => (
                     <option key={opt} value={opt}>

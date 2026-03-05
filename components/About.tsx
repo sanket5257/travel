@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 import {
   Compass,
   PhoneCall,
@@ -11,6 +12,7 @@ import {
   Download,
   MessageSquareMore,
   ThumbsUp,
+  ArrowRight,
 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,15 +21,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const heroImages = [
   {
-    src: "/images/about/hero-1.jpg",
+    src: "/images/about/about1.jpeg",
     alt: "Mountain landscape",
   },
   {
-    src: "/images/about/hero-2.jpg",
+    src: "/images/about/about2.jpeg",
     alt: "Forest trail",
   },
   {
-    src: "/images/about/hero-3.jpg",
+    src: "/images/about/about3.jpeg",
     alt: "Hiking adventure",
   },
 ];
@@ -209,7 +211,7 @@ export default function About() {
               our mission has been to craft personalized trips that celebrate
               culture, adventure, and connection.
             </p>
-            <div className="flex items-start gap-8 sm:gap-12">
+            <div className="flex items-start gap-8 sm:gap-12 mb-10">
               {stats.map((s) => (
                 <div key={s.label} className="stat-num">
                   <span className="block font-serif text-[2rem] sm:text-[2.5rem] xl:text-[2.8rem] text-gray-900 leading-none mb-1">
@@ -221,6 +223,13 @@ export default function About() {
                 </div>
               ))}
             </div>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 border border-gray-900 text-gray-900 px-7 py-3 rounded-full text-[13px] font-medium hover:bg-gray-900 hover:text-white transition-colors"
+            >
+              Know More About Us
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </div>

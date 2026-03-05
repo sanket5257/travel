@@ -111,7 +111,7 @@ export default function TrekkingLeaders() {
     >
       <div className="leaders-heading text-center mb-12 sm:mb-16">
         <h2 className="font-serif text-[2rem] sm:text-[2.75rem] xl:text-[3.25rem] leading-[1.12] text-gray-900 mb-3">
-          Our Trekking Leaders
+          Our Trekking/Trip Leaders
         </h2>
         <div
           className="mx-auto w-12 h-[3px] rounded-full"
